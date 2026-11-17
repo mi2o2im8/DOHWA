@@ -1,4 +1,8 @@
 import { BrowserRouter, Routes, Route } from 'react-router'
+
+// 공용 헤더
+import Header from './components/Header'
+
 import HomePage from './pages/HomePage'
 // 커뮤니티
 import CommunityPage from './pages/CommunityPage'
@@ -13,8 +17,11 @@ import VirtualPage from './pages/VirtualPage'
 // 미연시
 import StoryPage from './pages/StoryPage'
 
-// 공용 헤더
-import Header from './components/Header'
+// 계정 관련 페이지
+import LoginPage from './pages/account/auth/LoginPage'
+import SignupPage from './pages/account/signup/SignupPage'
+import MyPage from './pages/account/mypage/MyPage'
+import NotificationPage from './pages/account/notifications/NotificationPage'
 
 
 function App() {
@@ -25,7 +32,7 @@ function App() {
       <Header />  
 
       <Routes>
-        {/* 페이지들 */}
+        {/* 카테고리 페이지들 */}
         {/* 메인홈페이지 */}
         <Route path='/' element={<HomePage />} />
         {/* 커뮤니티 */}
@@ -40,6 +47,12 @@ function App() {
         <Route path='/virtual' element={<VirtualPage />} />
         {/* 미연시 */}
         <Route path='/story' element={<StoryPage />} />
+
+        {/* 계정 관련 페이지 */}
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/signup" element={<SignupPage />} />
+        <Route path="/mypage" element={<MyPage />} />
+        <Route path="/notifications" element={<NotificationPage />} />
       </Routes>
     </BrowserRouter>
   )

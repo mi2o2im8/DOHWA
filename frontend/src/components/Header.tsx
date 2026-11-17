@@ -25,17 +25,16 @@ function Header() {
 
                 {/* 사용자 메뉴 */}
                 <div className="header-actions">
-                    <button type="button" aria-label="알림" disabled>
+                    <Link to="/notifications" aria-label="알림">
                         ♧
-                    </button>
-                    <button
-                        type="button"
+                    </Link>
+                    <Link
+                        to="/mypage"
                         className="user-circle"
                         aria-label="마이페이지"
-                        disabled
                     >
                         나
-                    </button>
+                    </Link>
                 </div>
 
             </div>

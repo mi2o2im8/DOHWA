@@ -1,0 +1,202 @@
+
+.signup-page {
+    min-height: 100vh;
+    padding: 60px 20px;
+    background: #f9f7ff;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.signup-card {
+    width: 100%;
+    max-width: 520px;
+    background: white;
+    padding: 36px;
+    border: 1px solid #f5dfe6;
+    border-radius: 24px;
+    box-shadow: 0 8px 28px rgba(220, 145, 165, 0.08);
+}
+
+.signup-card h1 {
+    text-align: center;
+    color: #d77999;
+}
+
+.signup-card > p {
+    text-align: center;
+    color: #999;
+    margin-bottom: 28px;
+}
+
+.signup-card form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.signup-card label {
+    margin-top: 12px;
+    font-weight: 600;
+}
+
+.signup-card input,
+.signup-card select {
+    min-width: 0;
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #eadce1;
+    border-radius: 10px;
+    background: white;
+    font: inherit;
+    box-sizing: border-box;
+}
+
+.signup-card input:focus,
+.signup-card select:focus {
+    outline: 2px solid #edafc1;
+}
+
+.email-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.email-row input,
+.email-row select {
+    flex: 1;
+}
+
+.signup-card small {
+    color: #999;
+    overflow-wrap: anywhere;
+}
+
+.signup-card button {
+    margin-top: 24px;
+    padding: 14px;
+    border: none;
+    border-radius: 12px;
+    background: #df91aa;
+    color: white;
+    font-weight: 700;
+}
+
+.signup-card button:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+}
+
+
+/* 생년월일 선택 */
+.birth-row {
+    display: flex;
+    gap: 10px;
+}
+
+.birth-row select {
+    flex: 1;
+    min-width: 0;
+}
+
+
+/* 성별 버튼 영역 */
+.gender-row {
+    display: flex;
+    gap: 10px;
+}
+
+/* 기본 버튼 */
+.signup-card .gender-row button {
+    flex: 1;
+    margin-top: 0;
+    padding: 12px;
+    background: white;
+    color: #777;
+    border: 1px solid #eadce1;
+    border-radius: 12px;
+    cursor: pointer;
+}
+
+/* 선택된 버튼 */
+.signup-card .gender-row button.selected {
+    background: #ffe4ed;
+    border-color: #df91aa;
+    color: #c56486;
+    font-weight: 700;
+}
+
+/* 마우스를 올렸을 때 */
+.signup-card .gender-row button:hover {
+    border-color: #df91aa;
+}
+
+/* 이메일 인증번호 / 닉네임 */
+.signup-page .verification-row,
+.signup-page .nickname-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+}
+
+.signup-page .verification-row input,
+.signup-page .nickname-row input {
+    flex: 1;
+    min-width: 0;
+}
+
+.signup-page .verification-row button,
+.signup-page .nickname-row button {
+    flex-shrink: 0;
+    width: auto;
+    white-space: nowrap;
+}
+
+.signup-page button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.signup-page .password-row {
+    position: relative;
+    width: 100%;
+}
+
+.signup-page .password-row input {
+    width: 100%;
+    padding-right: 48px;
+    box-sizing: border-box;
+}
+
+.signup-page .password-row .password-toggle {
+    position: absolute;
+    top: 50%;
+    right: 6px;
+    transform: translateY(-50%);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 36px;
+    height: 36px;
+    margin: 0;
+    padding: 0;
+    border: none;
+    border-radius: 6px;
+
+    background: transparent;
+    color: #666;
+    cursor: pointer;
+}
+
+.signup-page .password-toggle:hover {
+    background: #f3f3f3;
+}
+
+.signup-page .password-toggle:focus-visible {
+    outline: 2px solid #3b9c75;
+    outline-offset: 2px;
+}
