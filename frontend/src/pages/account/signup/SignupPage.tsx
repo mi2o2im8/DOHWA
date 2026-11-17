@@ -91,7 +91,8 @@ function SignupPage(){
     }
 
     const [showPassword, setShowPassword] = useState(false)
-    const [showPasswordConfirm, setShowPasswordConfirm] = useState(false)
+
+    // const [showPasswordConfirm, setShowPasswordConfirm] = useState(false)
 
     // 비밀번호 길이 검증
     const isPasswordValid =
@@ -340,17 +341,32 @@ function SignupPage(){
                     )}
 
                     <label htmlFor="password">비밀번호 *</label>
-                    <input
-                        id="password"
-                        type="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        placeholder="8~64자"
-                        minLength={8}
-                        maxLength={64}
-                        autoComplete="new-password"
-                        required
-                    />
+                    <div className="password-row">
+                        <input
+                            id="password"
+                            type={showPassword ? 'text' : 'password'}
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            placeholder="8~64자"
+                            minLength={8}
+                            maxLength={64}
+                            autoComplete="new-password"
+                            required
+                        />
+
+                        <button
+                            type="button"
+                            className="password-toggle"
+                            onClick={() => setShowPassword((prev) => !prev)}
+                            aria-label={
+                                showPassword ? '비밀번호 숨기기' : '비밀번호 보기'
+                            }
+                            aria-pressed={showPassword}
+                            aria-controls="password"
+                        >
+                            {renderEyeIcon(showPassword)}
+                        </button>
+                    </div>
 
                     {password.length > 0 && (
                         <small
@@ -371,9 +387,7 @@ function SignupPage(){
                         id="passwordConfirm"
                         type="password"
                         value={passwordConfirm}
-                        onChange={(e) =>
-                            setPasswordConfirm(e.target.value)
-                        }
+                        onChange={(e) => setPasswordConfirm(e.target.value)}
                         placeholder="비밀번호 재입력"
                         maxLength={64}
                         autoComplete="new-password"
