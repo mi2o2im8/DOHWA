@@ -1,0 +1,182 @@
+
+/* DOHWA 로그인 페이지 */
+
+.login-page {
+    min-height: calc(100vh - 70px);
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 70px 20px 60px;
+    background: #fcf8f7;
+    box-sizing: border-box;
+    font-size: 14px;
+}
+
+/* 로그인 카드 */
+.login-card {
+    width: 100%;
+    max-width: 440px;
+    padding: 40px 36px;
+    background: #ffffff;
+    border: 1px solid #f2dfe3;
+    border-radius: 20px;
+    box-shadow: 0 8px 28px rgba(150, 95, 115, 0.08);
+    box-sizing: border-box;
+}
+
+/* 제목 */
+.login-card h1 {
+    margin: 0 0 8px;
+    text-align: center;
+    font-size: 23px;
+    font-weight: 700;
+    color: #79576e;
+}
+
+.login-card > p {
+    margin: 0 0 32px;
+    text-align: center;
+    font-size: 13px;
+    color: #aa8193;
+}
+
+/* 로그인 입력 폼 */
+.login-card form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.login-card form > div {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.login-card label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    color: #674e5c;
+}
+
+/* 입력창 */
+.login-card input {
+    width: 100%;
+    min-width: 0;
+    height: 45px;
+    padding: 0 14px;
+    border: 1px solid #eddde2;
+    border-radius: 9px;
+    outline: none;
+    background: #fffafa;
+    font-size: 14px;
+    color: #493c45;
+    box-sizing: border-box;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.login-card input::placeholder {
+    color: #baacb2;
+}
+
+.login-card input:focus {
+    border-color: #d990a8;
+    box-shadow: 0 0 0 3px rgba(217, 144, 168, 0.12);
+}
+
+/* 비밀번호 입력 영역 */
+.login-card .login-password-field {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+}
+
+.login-card .login-password-field input {
+    flex: 1;
+}
+
+/* 비밀번호 보기 버튼 */
+.login-card .login-password-field button {
+    flex-shrink: 0;
+    height: 45px;
+    padding: 0 12px;
+    border: 1px solid #eddde2;
+    border-radius: 9px;
+    background: #fff4f7;
+    color: #a56e85;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.login-card .login-password-field button:hover {
+    background: #fbe6ed;
+}
+
+/* 로그인 버튼 */
+.login-card button[type="submit"] {
+    width: 100%;
+    min-height: 46px;
+    margin-top: 14px;
+    border: none;
+    border-radius: 10px;
+    background: #d990a8;
+    color: #ffffff;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.login-card button[type="submit"]:hover:not(:disabled) {
+    background: #c77794;
+}
+
+.login-card button[type="submit"]:disabled {
+    background: #dfc4ce;
+    cursor: not-allowed;
+}
+
+/* 로그인 오류 메시지 */
+.login-card [role="alert"] {
+    margin: 4px 0;
+    font-size: 13px;
+    line-height: 1.6;
+    text-align: center;
+    color: #d05f75;
+}
+
+/* 회원가입 이동 */
+.login-card .login-signup-link {
+    margin: 24px 0 0;
+    text-align: center;
+    font-size: 13px;
+    color: #978891;
+}
+
+.login-card .login-signup-link a {
+    color: #b67f95;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.login-card .login-signup-link a:hover {
+    text-decoration: underline;
+}
+
+/* 모바일 대응 */
+@media (max-width: 480px) {
+    .login-page {
+        padding: 40px 16px;
+    }
+
+    .login-card {
+        padding: 30px 22px;
+        border-radius: 16px;
+    }
+
+    .login-card h1 {
+        font-size: 21px;
+    }
+}

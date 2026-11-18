@@ -1,7 +1,9 @@
 // 회원가입
 
-import { useState } from "react"
-
+import { useRef, useState } from "react"
+// 회원가입 버튼 연속 클릭시 중복 요청 막는 역할
+import type { FormEvent } from "react"
+import { supabase } from "../../../lib/supabase"
 import './SignupPage.css'
 
 function SignupPage(){
@@ -23,6 +25,11 @@ function SignupPage(){
 
     // 닉네임 중복 확인 안내
     const [nicknameMessage, setNicknameMessage] = useState('')
+
+    // 닉네임 형식 검증
+    // 완성형 한글, 영문, 숫자만 허용
+    // 1~12자
+    const nicknameRegex = /^[가-힣a-zA-Z0-9]{1,12}$/
 
     // 생년월일
     const [birthYear, setBirthYear] = useState('')
@@ -170,11 +177,212 @@ function SignupPage(){
         setEmailMessage('백엔드 연결 후 인증번호를 확인할 수 있습니다.')
     }
 
+    
     // 닉네임 중복 확인: 입력한 경우에만 실행
-    const handleCheckNickname = () => {
-        if (!nickname.trim()) return
+    // 닉네임 형식 검증 + Supabase 중복 확인
+    const handleCheckNickname = async () => {
 
-        setNicknameMessage('백엔드 연결 후 중복 여부를 확인할 수 있습니다.')
+        const value = nickname.trim()
+
+        if (!value) return
+
+        // 닉네임 정규식 검사
+        if (!nicknameRegex.test(value)) {
+            setNicknameMessage(
+                '닉네임은 완성형 한글, 영문, 숫자 1~12자로 입력해 주세요.'
+            )
+            return
+        }
+
+        setNicknameMessage('중복 확인 중...')
+
+        // Supabase 중복 확인
+        const { data, error } = await supabase.rpc(
+            'is_nickname_available',
+            { requested_nickname: value }
+        )
+
+        if (error) {
+            console.error('닉네임 중복 확인 오류:', error)
+            setNicknameMessage('중복 확인에 실패했습니다.')
+            return
+        }
+
+        if (data === true) {
+            setNicknameMessage('사용 가능한 닉네임입니다.')
+        } else {
+            setNicknameMessage('이미 사용 중인 닉네임입니다.')
+        }
+    }
+
+
+    // 회원가입 진행 상태
+    const [isSubmitting, setIsSubmitting] = useState(false)
+
+    // 회원가입 결과 메시지
+    const [signupMessage, setSignupMessage] = useState('')
+
+    // 회원가입 요청 완료 여부
+    const [signupSuccess, setSignupSuccess] = useState(false)
+
+    // 연속 제출 방지
+    const submittingRef = useRef(false)
+
+    // 회원가입 처리 함수
+    const handleSignup = async (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault()
+
+        if (submittingRef.current || signupSuccess) return
+
+        setSignupMessage('')
+
+        // 기존 입력값 검증
+        if (!isNameValid) {
+            setSignupMessage('이름 형식을 확인해 주세요.')
+            return
+        }
+
+        if (!isEmailValid) {
+            setSignupMessage('이메일 형식을 확인해 주세요.')
+            return
+        }
+
+        if (!isPasswordValid) {
+            setSignupMessage('비밀번호는 8~64자로 입력해 주세요.')
+            return
+        }
+
+        if (!isPasswordMatch) {
+            setSignupMessage('비밀번호가 일치하지 않습니다.')
+            return
+        }
+
+        if (!isBirthValid) {
+            setSignupMessage('생년월일을 확인해 주세요.')
+            return
+        }
+
+        // 현재 원본에는 약관 동의 상태가 없음
+        // 실제 서비스 공개 전에 필수 약관 검증 추가 필요
+
+        submittingRef.current = true
+        setIsSubmitting(true)
+
+        try {
+            const trimmedNickname = nickname.trim()
+
+            // 닉네임을 입력한 경우에만 형식 검증
+            if (trimmedNickname) {
+                if (!nicknameRegex.test(trimmedNickname)) {
+                    setSignupMessage(
+                        '닉네임은 완성형 한글, 영문, 숫자 1~12자로 입력해 주세요.'
+                    )
+                    return
+                }
+
+                // 회원가입 직전 닉네임 중복 재확인
+                const { data: available, error: nicknameError } =
+                    await supabase.rpc(
+                        'is_nickname_available',
+                        { requested_nickname: trimmedNickname }
+                    )
+
+                if (nicknameError) throw nicknameError
+
+                if (available !== true) {
+                    setSignupMessage('이미 사용 중인 닉네임입니다.')
+                    return
+                }
+            }
+
+            // 생년월일을 YYYY-MM-DD 형태로 변환
+            const birthDate = [
+                birthYear,
+                birthMonth.padStart(2, '0'),
+                birthDay.padStart(2, '0')
+            ].join('-')
+
+            // Supabase Auth 회원가입 요청
+            const { data, error } = await supabase.auth.signUp({
+                email,
+                password,
+                options: {
+                    emailRedirectTo:
+                        `${window.location.origin}/account/login`,
+
+                    // ⭐ DB 트리거에서 사용할 프로필 데이터
+                    data: {
+                        real_name: realName.trim(),
+                        nickname: trimmedNickname || null,
+                        birth_date: birthDate,
+                        gender: gender || null
+                    }
+                }
+            })
+
+            if (error) throw error
+
+            if (!data.user) {
+                setSignupMessage(
+                    '회원가입 결과를 확인하지 못했습니다.'
+                )
+                return
+            }
+
+            // 회원가입 요청 성공
+            setSignupSuccess(true)
+
+            // 기존 이메일 인증 UI에서 사용
+            setVerificationEmail(email)
+            setVerificationCode('')
+
+            setSignupMessage(
+                data.session
+                    ? '회원가입이 완료되었습니다.'
+                    : '회원가입 요청이 처리되었습니다. 이메일 인증 메일을 확인해 주세요.'
+            )
+
+            setEmailMessage(
+                '메일에 도착한 인증 링크를 눌러 이메일 인증을 완료해 주세요.'
+            )
+
+        } catch (error) {
+            console.error('회원가입 오류:', error)
+
+            const message =
+                error instanceof Error
+                    ? error.message.toLowerCase()
+                    : ''
+
+            if (message.includes('password')) {
+                setSignupMessage(
+                    '비밀번호가 Supabase 보안 정책에 맞지 않습니다.'
+                )
+            } else if (message.includes('rate limit')) {
+                setSignupMessage(
+                    '요청이 너무 많습니다. 잠시 후 다시 시도해 주세요.'
+                )
+            } else if (message.includes('already registered')) {
+                setSignupMessage(
+                    '이미 가입된 이메일입니다.'
+                )
+            } else if (
+                message.includes('duplicate') ||
+                message.includes('unique')
+            ) {
+                setSignupMessage(
+                    '닉네임 중복 등으로 가입할 수 없습니다. 입력값을 확인해 주세요.'
+                )
+            } else {
+                setSignupMessage(
+                    '회원가입에 실패했습니다. Supabase 설정을 확인해 주세요.'
+                )
+            }
+
+        } finally {
+            submittingRef.current = false
+            setIsSubmitting(false)
+        }
     }
 
     const renderEyeIcon = (visible: boolean) => (
@@ -201,7 +409,7 @@ function SignupPage(){
                 <h1>도화 회원가입</h1>
                 <p>함께 그리는 즐거움, DOHWA</p>
 
-                <form onSubmit={(e) => e.preventDefault()}>
+                <form onSubmit={handleSignup}>
                     <label htmlFor="realName">이름 *</label>
                     <input
                         id="realName"
@@ -533,10 +741,26 @@ function SignupPage(){
                             중성
                         </button>
                     </div>
-
-                    <button type="submit" disabled>
-                        회원가입 (준비 중)
+                    
+                    {/* supabase 회원가입 버튼 */}
+                    <button
+                        type="submit"
+                        disabled={isSubmitting || signupSuccess}
+                    >
+                        {isSubmitting
+                            ? '회원가입 처리 중...'
+                            : signupSuccess
+                                ? '회원가입 요청 완료'
+                                : '회원가입'
+                        }
                     </button>
+
+                    {/* 회원강비 결과 메시지 */}
+                    {signupMessage && (
+                        <small role="status">
+                            {signupMessage}
+                        </small>
+                    )}
                 </form>
             </section>
         </main>
