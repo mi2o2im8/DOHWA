@@ -4,9 +4,26 @@ import { useRef, useState } from "react"
 // 회원가입 버튼 연속 클릭시 중복 요청 막는 역할
 import type { FormEvent } from "react"
 import { supabase } from "../../../lib/supabase"
+import { replace, useNavigate } from "react-router"
 import './SignupPage.css'
 
+async function postSignupApi(path: string, body: Record<string, unknown>) {
+    const base = import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000'
+    const response = await fetch(base + path, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+    })
+    const result = await response.json()
+    if (!response.ok) {
+        throw new Error(typeof result.detail === 'string' ? result.detail : '입력값을 확인해 주세요.')
+    }
+    return result
+}
+
 function SignupPage(){
+
+    const navigate = useNavigate()
 
     // 이름
     const [realName, setRealName] = useState('')
@@ -91,7 +108,13 @@ function SignupPage(){
     const [verificationCode, setVerificationCode] = useState('')
     const [emailMessage, setEmailMessage] = useState('')
 
+    const [ticket, setTicket] = useState('')
+    const [emailBusy, setEmailBusy] = useState(false)
+    const emailVersion = useRef(0)
+
     const resetEmailVerification = () => {
+        emailVersion.current += 1
+        setTicket('')
         setVerificationEmail('')
         setVerificationCode('')
         setEmailMessage('')
@@ -156,28 +179,46 @@ function SignupPage(){
         selectedBirthDate <= today
 
     // 이메일 인증 요청
-    const handleRequestVerification = () => {
-        if (!isEmailValid) return
-
-        setVerificationEmail(email)
-        setVerificationCode('')
-        setEmailMessage('백엔드 연결 후 인증 메일을 발송할 수 있습니다.')
-
-        window.alert('아직 이메일 발송 기능이 연결되지 않았습니다.')
+    const handleRequestVerification = async () => {
+        if (!isEmailValid || emailBusy) return
+        const version = emailVersion.current
+        setEmailBusy(true)
+        setEmailMessage('인증번호를 보내고 있습니다.')
+        try {
+            await postSignupApi('/email/request-verification', { email })
+            if (version !== emailVersion.current) return
+            setTicket('')
+            setVerificationEmail(email)
+            setVerificationCode('')
+            setEmailMessage('인증번호를 보냈습니다. 5분 안에 입력해 주세요.')
+        } catch (error) {
+            if (version === emailVersion.current) {
+                setEmailMessage(error instanceof Error ? error.message : '발송에 실패했습니다.')
+            }
+        } finally {
+            setEmailBusy(false)
+        }
     }
 
     // 이메일 인증번호 확인
-    const handleVerifyEmail = () => {
-        if (
-            !isEmailValid ||
-            verificationEmail !== email ||
-            !verificationCode.trim()
-        ) return
-
-        setEmailMessage('백엔드 연결 후 인증번호를 확인할 수 있습니다.')
+    const handleVerifyEmail = async () => {
+        if (verificationEmail !== email || emailBusy) return
+        const version = emailVersion.current
+        setEmailBusy(true)
+        try {
+            const result = await postSignupApi('/email/verify', { email, code: verificationCode.trim() })
+            if (version !== emailVersion.current) return
+            setTicket(result.ticket)
+            setEmailMessage('이메일 인증이 완료되었습니다.')
+        } catch (error) {
+            if (version === emailVersion.current) {
+                setEmailMessage(error instanceof Error ? error.message : '인증번호를 확인해 주세요.')
+            }
+        } finally {
+            setEmailBusy(false)
+        }
     }
 
-    
     // 닉네임 중복 확인: 입력한 경우에만 실행
     // 닉네임 형식 검증 + Supabase 중복 확인
     const handleCheckNickname = async () => {
@@ -247,6 +288,11 @@ function SignupPage(){
             return
         }
 
+        if (!ticket || verificationEmail !== email || emailBusy) {
+            setSignupMessage('이메일 인증을 완료해 주세요.')
+            return
+        }
+
         if (!isPasswordValid) {
             setSignupMessage('비밀번호는 8~64자로 입력해 주세요.')
             return
@@ -303,48 +349,24 @@ function SignupPage(){
             ].join('-')
 
             // Supabase Auth 회원가입 요청
-            const { data, error } = await supabase.auth.signUp({
-                email,
-                password,
-                options: {
-                    emailRedirectTo:
-                        `${window.location.origin}/account/login`,
-
-                    // ⭐ DB 트리거에서 사용할 프로필 데이터
-                    data: {
-                        real_name: realName.trim(),
-                        nickname: trimmedNickname || null,
-                        birth_date: birthDate,
-                        gender: gender || null
-                    }
-                }
+            await postSignupApi('/signup', {
+                email, password, ticket,
+                // ⭐ DB 트리거에서 사용할 프로필 데이터
+                real_name: realName.trim(),
+                nickname: trimmedNickname || null,
+                birth_date: birthDate,
+                gender: gender || null
             })
-
-            if (error) throw error
-
-            if (!data.user) {
-                setSignupMessage(
-                    '회원가입 결과를 확인하지 못했습니다.'
-                )
-                return
-            }
 
             // 회원가입 요청 성공
             setSignupSuccess(true)
+            setSignupMessage('회원가입이 완료되었습니다.')
 
             // 기존 이메일 인증 UI에서 사용
-            setVerificationEmail(email)
             setVerificationCode('')
 
-            setSignupMessage(
-                data.session
-                    ? '회원가입이 완료되었습니다.'
-                    : '회원가입 요청이 처리되었습니다. 이메일 인증 메일을 확인해 주세요.'
-            )
-
-            setEmailMessage(
-                '메일에 도착한 인증 링크를 눌러 이메일 인증을 완료해 주세요.'
-            )
+            // 회원가입 완료 후 베이직 홈으로 이동
+            navigate('/',{replace:true})
 
         } catch (error) {
             console.error('회원가입 오류:', error)
@@ -375,7 +397,7 @@ function SignupPage(){
                 )
             } else {
                 setSignupMessage(
-                    '회원가입에 실패했습니다. Supabase 설정을 확인해 주세요.'
+                    error instanceof Error ? error.message : '회원가입에 실패했습니다.'
                 )
             }
 
@@ -476,7 +498,7 @@ function SignupPage(){
                         >
                             <option value="gmail.com">gmail.com</option>
                             <option value="naver.com">naver.com</option>
-                            <option value="daum.com">daum.com</option>
+                            <option value="daum.net">daum.net</option>
                             <option value="kakao.com">kakao.com</option>
                             <option value="other">기타</option>
                         </select>
@@ -502,7 +524,7 @@ function SignupPage(){
                     {/* 이메일 인증 요청 */}
                     <button
                         type="button"
-                        disabled={!isEmailValid}
+                        disabled={!isEmailValid || emailBusy || isSubmitting || signupSuccess}
                         onClick={handleRequestVerification}
                     >
                         이메일 인증 요청
@@ -524,16 +546,18 @@ function SignupPage(){
 
                                 <button
                                     type="button"
-                                    disabled={!verificationCode.trim()}
+                                    disabled={!/^\d{6}$/.test(verificationCode) || emailBusy || Boolean(ticket)}
                                     onClick={handleVerifyEmail}
                                 >
                                     인증확인
                                 </button>
                             </div>
 
-                            <small role="status">{emailMessage}</small>
+
                         </>
                     )}
+
+                    {emailMessage && <small role="status">{emailMessage}</small>}
 
                     {/* 이메일 입력 결과 표시 */}
                     {emailId.length > 0 && (

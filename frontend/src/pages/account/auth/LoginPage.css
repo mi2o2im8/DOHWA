@@ -7,7 +7,7 @@
     justify-content: center;
     align-items: flex-start;
     padding: 70px 20px 60px;
-    background: #fcf8f7;
+    background: #f9f7ff;
     box-sizing: border-box;
     font-size: 14px;
 }
@@ -179,4 +179,27 @@
     .login-card h1 {
         font-size: 21px;
     }
+}
+
+
+/* 이메일 기억 */
+.login-card .login-remember-email {
+    display: inline-flex;
+    align-items: center;
+    align-self: flex-start;
+    gap: 8px;
+    width: fit-content;
+    margin: 0;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+/* 이메일 입력칸과 별도로 체크박스 크기 지정 */
+.login-card .login-remember-email input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    margin: 0;
+    padding: 0;
+    flex-shrink: 0;
+    cursor: pointer;
 }

@@ -3,20 +3,32 @@
 // React 상태 관리
 import { useState } from "react"
 import type { FormEvent } from "react"
-
 // 페이지 이동
 import { Link, useNavigate } from "react-router"
-
 // Supabase 클라이언트
-import { supabase } from "../../../lib/supabase"
-
+import { supabase, setLoginSessionPreference } from "../../../lib/supabase"
 import './LoginPage.css'
 
 function LoginPage(){
+    // 아이디 기억에 사용할 저장 키
+    const REMEMBERED_EMAIL_KEY= 'dohwa.rememberdEmail'
 
     // 로그인 입력 상태
-    const [email, setEmail] = useState('')
+    const [email, setEmail] = useState(() => {
+        // 로그인 페이지 오픈시 저장된 이메일 불러오기
+        try{
+            return localStorage.getItem(REMEMBERED_EMAIL_KEY) ?? ''
+        } catch {
+            return ''
+        }
+    })
     const [password, setPassword] = useState('')
+
+    // 아이디 기억 체크 상태
+    const [rememberEmail, setRememberEmail] = useState(Boolean(email))
+
+    // 자동로그인 체크 상태
+    const [keepSession, setKeepSession] = useState(false)
 
     // 비밀번호 보기
     const [showPassword, setShowPassword] = useState(false)
@@ -55,6 +67,9 @@ function LoginPage(){
                 throw error
             }
 
+            // 이번 로그인에 사용할 세션 저장 방식 지정
+            setLoginSessionPreference(keepSession)
+
             // 실제 로그인 세션 확인
             if (!data.session || !data.user) {
                 setLoginMessage(
@@ -71,6 +86,15 @@ function LoginPage(){
                     '이메일 인증을 완료한 후 로그인해 주세요.'
                 )
                 return
+            }
+
+            // 로그인 성공 후 체크한 이메일 저장
+            if (rememberEmail) {
+                try {
+                    localStorage.setItem(REMEMBERED_EMAIL_KEY, email.trim())
+                } catch {
+                    console.warn('이메일 기억 저장 실패', error)
+                }
             }
 
             // 로그인 성공 시 홈으로 이동
@@ -110,6 +134,8 @@ function LoginPage(){
             }
 
         } finally {
+            // 이번 로그인에 사용한 저장 설정 초기화
+            setLoginSessionPreference(undefined)
             setIsLoading(false)
         }
     }
@@ -171,6 +197,41 @@ function LoginPage(){
                             </button>
                         </div>
                     </div>
+
+                    {/* 아이디 기억 */}
+                    <label htmlFor="rememberEmail" className="login-remember-email">
+                        <input
+                            id="rememberEmail"
+                            type="checkbox"
+                            checked= {rememberEmail}
+                            disabled= {isLoading}
+                            onChange={(e)=> {
+                                const checked = e.target.checked
+                                setRememberEmail(checked)
+
+                                if (!checked) {
+                                    try {
+                                        localStorage.removeItem(REMEMBERED_EMAIL_KEY)
+                                    }catch {
+                                        console.warn('저장된 이메일을 삭제할 수 없습니다.')
+                                    }
+                                }
+                            }}
+                        />
+                        아이디 기억하기
+                    </label>
+                    
+                    {/* 자동로그인 */}
+                    <label htmlFor="keepSession" className="login-remember-email">
+                        <input
+                            id="keepSession"
+                            type="checkbox"
+                            checked={keepSession}
+                            disabled={isLoading}
+                            onChange={(e) => setKeepSession(e.target.checked)}
+                        />
+                        자동로그인
+                    </label>
 
                     {/* 로그인 버튼 */}
                     <button
