@@ -1,8 +1,10 @@
 // 마이페이지
 import { useEffect, useRef, useState } from 'react'
+import type { User } from '@supabase/supabase-js'
 import type { ChangeEvent, FormEvent, PointerEvent } from 'react'
 import { Link, Navigate, useSearchParams } from 'react-router'
 import { supabase } from '../../../lib/supabase'
+import AccountSettingsPanel from '../settings/AccountSettingsPanel'
 import './MyPage.css'
 
 type Crop = { x: number; y: number; zoom: number }
@@ -157,7 +159,7 @@ type Profile = {
 }
 
 function MyPage() {
-    const [user, setUser] = useState<{ id: string; email?: string } | null>()
+    const [user, setUser] = useState<User | null>()
     useEffect(() => {
         const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
             setUser(session?.user ?? null)
@@ -168,10 +170,15 @@ function MyPage() {
     if (user === undefined) return <main className="mypage">로그인 상태를 확인하고 있어요.</main>
     if (user === null) return <Navigate to="/login" replace />
 
-    return <ProfileSettings key={user.id} userId={user.id} email={user.email} />
+    return <ProfileSettings key={user.id} userId={user.id} email={user.email}
+        emailConfirmed={Boolean(user.email_confirmed_at)} />
 }
 
-function ProfileSettings({ userId, email }: { userId: string; email?: string }) {
+function ProfileSettings({ userId, email, emailConfirmed }: {
+    userId: string
+    email?: string
+    emailConfirmed: boolean
+}) {
     const [searchParams, setSearchParams] = useSearchParams()
     const isPreview = searchParams.get('view') === 'public'
     const tabs = isPreview ? publicTabs : [...publicTabs, ...ownerTabs]
@@ -492,11 +499,9 @@ function ProfileSettings({ userId, email }: { userId: string; email?: string }) 
                 {publicTab && <p className="mypage-empty">{publicTab.empty}</p>}
                 {activeTab.key === 'character' &&
                     <Link className="mypage-action" to="/virtual">마이캐릭터 만들기</Link>}
+                {/* ⭐ 기존 계정 설정 탭에 계정 관리 기능 연결 */}
                 {activeTab.key === 'settings' && (
-                    <dl>
-                        <dt>이메일</dt>
-                        <dd>{email ?? '등록된 이메일이 없어요.'}</dd>
-                    </dl>
+                    <AccountSettingsPanel email={email} emailConfirmed={emailConfirmed} />
                 )}
             </section>
         </main>
