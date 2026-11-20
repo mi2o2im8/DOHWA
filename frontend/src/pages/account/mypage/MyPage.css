@@ -1,0 +1,363 @@
+/* ⭐ 내 작가 프로필과 공개 미리보기 공통 스타일 */
+.mypage {
+    flex: 1;
+    padding: clamp(24px, 5vw, 54px);
+    background: #fffaf7;
+    color: #442a26;
+    text-align: left;
+}
+
+.mypage h1 {
+    margin: 0 0 24px;
+    color: inherit;
+    font-size: clamp(24px, 4vw, 36px);
+    font-weight: 750;
+    line-height: 1.25;
+}
+
+.mypage h2 {
+    color: inherit;
+    font-size: 21px;
+    font-weight: 700;
+}
+
+.mypage-profile,
+.mypage-panel {
+    border: 1px solid #efd3d5;
+    border-radius: 16px;
+    padding: clamp(16px, 3vw, 30px);
+    background: #fff;
+}
+
+.mypage-profile {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 16px;
+}
+
+.mypage-avatar {
+    display: grid;
+    width: clamp(58px, 10vw, 108px);
+    aspect-ratio: 1;
+    place-items: center;
+    overflow: hidden;
+    border-radius: 50%;
+    background: #fbe1e4;
+    color: #85414d;
+    font-size: 28px;
+    font-weight: 700;
+}
+
+.mypage-avatar img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.mypage-identity {
+    flex: 1 1 150px;
+    overflow-wrap: anywhere;
+}
+
+.mypage-identity p,
+.mypage-panel p {
+    color: #715652;
+    font-size: 15px;
+}
+
+.mypage-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.mypage-action {
+    display: inline-block;
+    padding: 10px 15px;
+    border: 1px solid #a74758;
+    border-radius: 8px;
+    color: #a13e50;
+    background: #fff;
+    font: inherit;
+    font-size: 15px;
+    font-weight: 650;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.mypage-action:hover {
+    background: #fff0f2;
+}
+
+.mypage-action-primary {
+    color: #fff;
+    background: #a74758;
+}
+
+.mypage-action-primary:hover {
+    background: #8c3847;
+}
+
+.mypage-action:disabled {
+    opacity: 0.6;
+    cursor: default;
+}
+
+.mypage-tabs {
+    display: flex;
+    gap: 6px 20px;
+    flex-wrap: wrap;
+    margin: 18px 0 22px;
+    border-bottom: 1px solid #efd3d5;
+}
+
+.mypage-tabs button {
+    padding: 10px 6px;
+    border: 0;
+    border-bottom: 3px solid transparent;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.mypage-tabs button[aria-current] {
+    border-bottom-color: #a74758;
+    color: #a13e50;
+    font-weight: 700;
+}
+
+/* ⭐ 사진 편집과 연락 정보를 담는 프로필 수정 창 */
+.mypage-dialog {
+    --profile-ink: #442a26;
+    --profile-muted: #795e56;
+    --profile-border: #e7d1ca;
+    --profile-accent: #a45158;
+    box-sizing: border-box;
+    width: min(920px, calc(100% - 24px));
+    max-height: calc(100dvh - 24px);
+    padding: clamp(16px, 4vw, 32px);
+    border: 1px solid #efd3d5;
+    border-radius: 16px;
+    background: #fffcfb;
+    color: var(--profile-ink);
+    color-scheme: light;
+}
+
+.mypage-dialog::backdrop {
+    background: #43251e65;
+}
+
+.mypage-dialog h2 {
+    margin: 0 0 20px;
+}
+
+.dohwa-profile-fields {
+    display: grid;
+    grid-template-columns: minmax(180px, 0.85fr) minmax(0, 1.3fr);
+    gap: clamp(18px, 4vw, 36px);
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+.dohwa-profile-photo,
+.dohwa-profile-details {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    min-width: 0;
+}
+
+.dohwa-profile-details {
+    padding-left: clamp(18px, 4vw, 36px);
+    border-left: 1px solid var(--profile-border);
+}
+
+.dohwa-profile-details > label,
+.dohwa-profile-photo > label {
+    font-weight: 650;
+}
+
+.dohwa-avatar-preview,
+.dohwa-avatar-crop {
+    aspect-ratio: 1;
+    overflow: hidden;
+    border-radius: 12px;
+    background: #f7e1da;
+}
+
+.dohwa-avatar-preview {
+    display: grid;
+    place-items: center;
+    color: var(--profile-accent);
+    font-size: 36px;
+}
+
+.dohwa-avatar-preview img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.dohwa-avatar-crop {
+    position: relative;
+    cursor: grab;
+    touch-action: none;
+}
+
+.dohwa-avatar-crop:active {
+    cursor: grabbing;
+}
+
+.dohwa-avatar-crop img {
+    position: absolute;
+    max-width: none;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+}
+
+.dohwa-avatar-guide {
+    position: absolute;
+    inset: 1%;
+    border: 2px solid white;
+    border-radius: 50%;
+    box-shadow: 0 0 0 150px #36231973;
+    pointer-events: none;
+}
+
+.dohwa-profile-photo input[type=range],
+.dohwa-contact-toggle input {
+    accent-color: var(--profile-accent);
+}
+
+.dohwa-profile-details input:not([type=checkbox]) {
+    box-sizing: border-box;
+    width: 100%;
+    min-width: 0;
+    padding: 12px;
+    border: 1px solid #cbb2aa;
+    border-radius: 9px;
+    background: #fff;
+    color: inherit;
+    font: inherit;
+}
+
+.mypage-dialog small {
+    color: var(--profile-muted);
+}
+
+.dohwa-bio-count {
+    align-self: end;
+}
+
+.dohwa-contact-row,
+.dohwa-profile-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.dohwa-contact-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+.dohwa-contact-toggle input {
+    appearance: none;
+    display: inline-grid;
+    align-items: center;
+    width: 38px;
+    height: 22px;
+    margin: 0;
+    padding: 3px;
+    border: 1px solid #886f65;
+    border-radius: 20px;
+    background: #e4d6d0;
+    cursor: pointer;
+}
+
+.dohwa-contact-toggle input::before {
+    content: '';
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: white;
+}
+
+.dohwa-contact-toggle input:checked {
+    justify-items: end;
+    background: var(--profile-accent);
+}
+
+.dohwa-profile-actions {
+    justify-content: end;
+    margin-top: auto;
+    padding-top: 14px;
+}
+
+.dohwa-profile-button {
+    box-sizing: border-box;
+    padding: 10px 18px;
+    border: 1px solid #a76769;
+    border-radius: 9px;
+    background: #fff;
+    color: var(--profile-ink);
+    font: inherit;
+    cursor: pointer;
+}
+
+.dohwa-profile-save {
+    background: var(--profile-accent);
+    color: #fff;
+}
+
+.dohwa-profile-button:disabled {
+    opacity: 0.65;
+    cursor: wait;
+}
+
+.dohwa-file-button {
+    position: relative;
+    display: block;
+    text-align: center;
+}
+
+.dohwa-file-button input {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.dohwa-file-button:focus-within {
+    outline: 2px solid var(--profile-accent);
+    outline-offset: 3px;
+}
+
+.dohwa-profile-error {
+    margin: 0;
+    color: #a12631;
+}
+
+@media (max-width: 680px) {
+    .dohwa-profile-fields {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .dohwa-profile-details {
+        padding: 20px 0 0;
+        border-top: 1px solid var(--profile-border);
+        border-left: 0;
+    }
+}

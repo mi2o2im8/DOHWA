@@ -1,3 +1,5 @@
+# 실행 명령어 uvicorn main:app --reload --env-file .env
+
 import os
 import re
 import secrets
