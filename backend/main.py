@@ -18,8 +18,10 @@ from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field, SecretStr, field_validator
+from virtual_character import router as virtual_router
 
 app = FastAPI(title="DOHWA API")
+app.include_router(virtual_router)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://localhost:5173", "http://127.0.0.1:5173"],

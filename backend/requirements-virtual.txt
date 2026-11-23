@@ -1,0 +1,8 @@
+# 마이캐릭터 AI 모델 실행에 필요한 추가 패키지
+Pillow>=10
+torch>=2.5
+torchvision
+transformers>=4.57,<5
+diffusers>=0.35,<1
+accelerate>=1
+safetensors>=0.4

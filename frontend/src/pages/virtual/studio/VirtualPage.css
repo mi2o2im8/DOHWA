@@ -1,0 +1,145 @@
+.virtual-studio {
+    text-align: left;
+    color-scheme: light;
+    color: #3b293b;
+    background: #fcf7fb;
+    flex: 1;
+    padding: clamp(18px, 4vw, 46px);
+    font-size: 15px;
+}
+
+.virtual-studio a {
+    color: #754d83;
+    font-weight: 650;
+}
+
+.virtual-studio h1 {
+    color: inherit;
+    font-size: clamp(25px, 4vw, 40px);
+    margin: 20px 0 28px;
+}
+
+.virtual-workspace {
+    display: grid;
+    grid-template-columns: minmax(205px, 245px) minmax(0, 1fr) minmax(205px, 245px);
+    align-items: start;
+    gap: 20px;
+}
+
+.virtual-stage {
+    min-height: 360px;
+    display: grid;
+    place-items: center;
+    padding: 12px;
+    border: 1px solid #e5d7e8;
+    border-radius: 18px;
+    background: #fff;
+}
+
+.virtual-stage canvas {
+    display: block;
+    max-width: 100%;
+    max-height: 64vh;
+    height: auto;
+    width: auto;
+    touch-action: none;
+}
+
+.virtual-controls {
+    min-width: 0;
+    display: grid;
+    gap: 12px;
+    padding: 18px;
+    border: 1px solid #e5d7e8;
+    border-radius: 18px;
+    background: #fff;
+}
+
+.virtual-controls label {
+    display: grid;
+    gap: 6px;
+}
+
+.virtual-controls input {
+    max-width: 100%;
+    accent-color: #874caf;
+}
+
+.virtual-controls fieldset {
+    min-width: 0;
+    border: 1px solid #e5d7e8;
+    border-radius: 10px;
+    margin: 0;
+}
+
+.virtual-tools {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-bottom: 6px;
+}
+
+.virtual-controls button {
+    border: 1px solid #e5d7e8;
+    border-radius: 8px;
+    background: #fbf6fe;
+    color: #563367;
+    cursor: pointer;
+    font: inherit;
+    padding: 6px 9px;
+}
+
+.virtual-controls button[aria-pressed="true"] {
+    border-color: #9558ba;
+    background: #f0e2fa;
+}
+
+.virtual-controls .virtual-primary {
+    background: #77409c;
+    color: #fff;
+}
+
+.virtual-controls button:disabled {
+    opacity: .55;
+    cursor: default;
+}
+
+.virtual-controls .virtual-check {
+    display: flex;
+    align-items: center;
+}
+
+.virtual-hint {
+    font-size: 13px;
+    line-height: 1.5;
+    color: #695371;
+}
+
+@media (max-width: 660px) {
+    .virtual-workspace {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .virtual-stage {
+        min-height: 235px;
+    }
+}
+
+.virtual-controls h2 {
+    margin: 0;
+}
+
+.virtual-motion-preview {
+    min-height: 0;
+    gap: 10px;
+}
+
+@media (min-width: 661px) and (max-width: 900px) {
+    .virtual-workspace {
+        grid-template-columns: minmax(205px, 245px) minmax(0, 1fr);
+    }
+
+    .virtual-workspace > aside:last-child {
+        grid-column: 2;
+    }
+}

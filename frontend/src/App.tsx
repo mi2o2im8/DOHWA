@@ -12,8 +12,6 @@ import RoomsPage from './pages/RoomsPage'
 import ClipsPage from './pages/ClipsPage'
 // 작가 찾기
 import ArtistsPage from './pages/ArtistsPage'
-// 나의 버추얼 
-import VirtualPage from './pages/VirtualPage'
 // 미연시
 import StoryPage from './pages/StoryPage'
 
@@ -22,6 +20,10 @@ import LoginPage from './pages/account/auth/LoginPage'
 import SignupPage from './pages/account/signup/SignupPage'
 import MyPage from './pages/account/mypage/MyPage'
 import NotificationPage from './pages/account/notifications/NotificationPage'
+
+// 버추얼 페이지 폴더 분리
+import VirtualGalleryPage from './pages/virtual/gallery/VirtualGalleryPage'
+import VirtualPage from './pages/virtual/studio/VirtualPage'
 
 
 function App() {
@@ -45,6 +47,10 @@ function App() {
         <Route path='/artist' element={<ArtistsPage />} />
         {/* 나의 버추얼 */}
         <Route path='/virtual' element={<VirtualPage />} />
+
+        <Route path="/virtual" element={<VirtualGalleryPage />} />
+        <Route path="/virtual/create" element={<VirtualPage />} />
+
         {/* 미연시 */}
         <Route path='/story' element={<StoryPage />} />
 
