@@ -1,5 +1,7 @@
 // 마이 버추얼 제작 페이지
 
+// 마이 버추얼 제작 페이지
+
 import { useEffect, useId, useRef, useState } from 'react'
 import type { ChangeEvent, PointerEvent } from 'react'
 import { Link } from 'react-router'
@@ -122,3 +124,218 @@ export default function VirtualPage() {
     const dialog = useRef<HTMLDialogElement>(null) // 이미지 구도 확인 창
     const upload = useRef<HTMLInputElement>(null) // 이미지 파일 선택 입력창
     const edit = useRef<HTMLCanvasElement>(null) // 마스크를 그리는 편집 캔버스
+    const preview = useRef<HTMLCanvasElement>(null)
+    const drag = useRef<{ pointer: number; layer: LayerId; point: Point; tool: Tool; size: number } | null>(null)
+    const request = useRef<AbortController | null>(null)
+    const uploadTicket = useRef(0)
+
+    useEffect(() => () => {
+        request.current?.abort()
+        uploadTicket.current++
+    }, [])
+    useEffect(() => {
+        if (review && !dialog.current?.open) dialog.current?.showModal()
+    }, [review])
+    useEffect(() => {
+        if (editor && edit.current) drawEdit(edit.current, editor, active)
+    }, [editor, active, revision])
+
+    // Control changes update the running preview without restarting its clock.
+    useEffect(() => {
+        if (!editor || !preview.current) return
+        const target = preview.current
+        const started = performance.now()
+        let frame = 0
+        let last = -Infinity
+        const tick = (now: number) => {
+            if (now - last >= 30) {
+                drawMotion(target, editor, (now - started) / 1000)
+                last = now
+            }
+            frame = requestAnimationFrame(tick)
+        }
+        frame = requestAnimationFrame(tick)
+        return () => cancelAnimationFrame(frame)
+    }, [editor])
+
+    const refresh = () => setRevision((previous) => previous + 1)
+    async function chooseFile(event: ChangeEvent<HTMLInputElement>) {
+        const file = event.currentTarget.files?.[0]
+        event.currentTarget.value = ''
+        if (!file) return
+        const ticket = ++uploadTicket.current
+        setUploadError('')
+        try {
+            if (!['image/png', 'image/jpeg', 'image/webp'].includes(file.type) || file.size > 4 * 1024 * 1024) {
+                throw new Error('4MB 이하의 PNG, JPG, WebP 이미지를 선택해 주세요.')
+            }
+            const original = await readOriginal(file)
+            const image = await loadImage(original)
+            if (ticket !== uploadTicket.current) return
+            setConfirmed(false)
+            setReview({ image, original })
+        } catch (error) {
+            if (ticket === uploadTicket.current) {
+                setUploadError(error instanceof Error && !(error instanceof DOMException)
+                    ? error.message : '이미지를 열 수 없어요. 다른 파일을 선택해 주세요.')
+            }
+        }
+    }
+
+    function confirmImage() {
+        if (!review || !confirmed) return
+        const next = createEditor(review.image, review.original)
+        drag.current = null
+        setEditor(next)
+        setActive('eyeL')
+        setDetected([])
+        dialog.current?.close()
+        void runDetection(next)
+    }
+
+    // Run detection on the current image, keeping any brush edits during a retry.
+    async function runDetection(next: Editor) {
+        request.current?.abort()
+        const controller = new AbortController()
+        request.current = controller
+        setDetecting(true)
+        setDetectionFailed(false)
+        setStatus('AI가 그림의 영역을 감지하고 있어요. 브러시 편집을 시작할 수 있어요.')
+        try {
+            const found = await detectLayers(next, controller.signal)
+            if (controller.signal.aborted) return
+            setDetected(found)
+            setStatus(found.length === layerIds.length ? '모든 레이어의 영역을 감지했어요.'
+                : found.length ? `자동 감지 ${found.length}/${layerIds.length}개 · 나머지 영역은 브러시로 지정해 주세요.`
+                    : '자동 감지된 영역이 없어요. 브러시로 영역을 지정할 수 있어요.')
+            refresh()
+        } catch (error) {
+            if (!controller.signal.aborted) {
+                const detail = error instanceof Error && !(error instanceof TypeError || error instanceof SyntaxError)
+                    ? error.message : '영역 감지 서버에 연결할 수 없어요.'
+                setDetectionFailed(true)
+                setStatus(`${detail} 원본을 유지했어요. 브러시로 계속 편집할 수 있어요.`)
+            }
+        } finally {
+            if (!controller.signal.aborted) setDetecting(false)
+        }
+    }
+
+    function pointerDown(event: PointerEvent<HTMLCanvasElement>) {
+        if (!editor || drag.current || event.button !== 0) return
+        const point = canvasPoint(event)
+        const layer = editor.layers[active]
+        startEdit(layer)
+        brushStroke(layer, tool, size, point, point)
+        if (tool !== 'pivot') {
+            event.currentTarget.setPointerCapture(event.pointerId)
+            drag.current = { pointer: event.pointerId, layer: active, point, tool, size }
+        }
+        refresh()
+    }
+
+    function pointerMove(event: PointerEvent<HTMLCanvasElement>) {
+        const stroke = drag.current
+        if (!editor || !stroke || stroke.pointer !== event.pointerId) return
+        const point = canvasPoint(event)
+        brushStroke(editor.layers[stroke.layer], stroke.tool, stroke.size, stroke.point, point)
+        stroke.point = point
+        drawEdit(event.currentTarget, editor, active)
+    }
+
+    function endStroke(event: PointerEvent<HTMLCanvasElement>) {
+        if (drag.current?.pointer === event.pointerId) drag.current = null
+    }
+
+    const layer = editor?.layers[active]
+    return <main className="dohwa-studio">
+        <header className="dohwa-studio-header">
+            <div><Link to="/virtual">버추얼 갤러리</Link><h1>마이캐릭터 제작</h1></div>
+        </header>
+        <div className="dohwa-studio-grid">
+            <aside className="dohwa-studio-panel">
+                <h2>이미지와 레이어</h2>
+                <p>머리부터 허리까지 담긴 상반신 그림을 사용해 주세요.</p>
+                <label className="dohwa-studio-upload">이미지 업로드
+                    <input ref={upload} type="file" accept="image/png,image/jpeg,image/webp" onChange={chooseFile} />
+                </label>
+                {uploadError && <p role="alert">{uploadError}</p>}
+                <div className="dohwa-studio-original">
+                    {editor ? <img src={editor.original} alt="원본 캐릭터" /> : <span>원본 미리보기</span>}
+                </div>
+                <p className="dohwa-studio-detection" role="status">{status}</p>
+                {editor && detectionFailed && <button type="button" disabled={detecting}
+                    onClick={() => void runDetection(editor)}>자동 감지 다시 시도</button>}
+                <h3>레이어</h3>
+                {groups.map(({ label, layers }) => <details key={label} className="dohwa-studio-group" open>
+                    <summary>{label}</summary>
+                    {layers.map((id) => <button type="button" key={id} aria-pressed={id === active}
+                        onClick={() => setActive(id)}>
+                        {labels[id]}{detected.includes(id) && <small>자동 감지</small>}
+                    </button>)}
+                </details>)}
+                <h3>브러시 도구</h3>
+                <fieldset disabled={!editor}>
+                    <div className="dohwa-studio-buttons">
+                        {tools.map(({ id, label }) => <button type="button" key={id} aria-pressed={tool === id}
+                            onClick={() => setTool(id)}>{label}</button>)}
+                    </div>
+                    <Range label="브러시 크기" min={3} max={110} unit="px" value={size} onChange={setSize} />
+                    <div className="dohwa-studio-buttons">
+                        {(['undo', 'redo', 'reset'] as const).map((action, index) => (
+                            <button type="button" key={action}
+                                disabled={!layer || (action !== 'reset' && !layer[action].length)}
+                                onClick={() => { if (layer && !drag.current) { changeHistory(layer, action); refresh() } }}>
+                                {['뒤로가기', '앞으로 가기', '원래대로'][index]}
+                            </button>
+                        ))}
+                    </div>
+                </fieldset>
+            </aside>
+
+            <section className="dohwa-studio-panel dohwa-studio-workspace">
+                <h2>리깅 영역 편집</h2>
+                <p>편집한 영역과 움직임 설정이 미리보기에 바로 적용돼요.</p>
+                <div className="dohwa-studio-canvases">
+                    <figure>
+                        <figcaption>마스크 편집 <small>{labels[active]}</small></figcaption>
+                        <div className="dohwa-studio-stage">
+                            {editor ? <canvas ref={edit} width={editor.source.width} height={editor.source.height}
+                                aria-label="마스크 편집" onPointerDown={pointerDown} onPointerMove={pointerMove}
+                                onPointerUp={endStroke} onPointerCancel={endStroke} onLostPointerCapture={endStroke} />
+                                : <span>이미지를 먼저 올려 주세요.</span>}
+                        </div>
+                    </figure>
+                    <figure>
+                        <figcaption>캐릭터 움직임 미리보기</figcaption>
+                        <div className="dohwa-studio-stage">
+                            {editor ? <canvas ref={preview} width={editor.source.width} height={editor.source.height}
+                                aria-label="캐릭터 움직임 미리보기" /> : <span>움직임 미리보기</span>}
+                        </div>
+                    </figure>
+                </div>
+            </section>
+
+            <aside className="dohwa-studio-panel dohwa-studio-settings">
+                <h2>{labels[active]} 설정</h2>
+                {layer ? <fieldset><LayerSettings id={active} motion={layer.motion}
+                    update={(patch) => { Object.assign(layer.motion, patch); refresh() }} /></fieldset>
+                    : <p>이미지를 올리면 설정할 수 있어요.</p>}
+            </aside>
+        </div>
+        <dialog className="dohwa-studio-review" ref={dialog} aria-labelledby="dohwa-studio-review-title"
+            onClose={() => setReview(undefined)}>
+            <h2 id="dohwa-studio-review-title">캐릭터 이미지 확인</h2>
+            <p>캐릭터의 머리부터 허리까지 보이는지 확인해 주세요.</p>
+            {review && <img src={review.original} alt="선택한 캐릭터 이미지" />}
+            <label className="dohwa-studio-check"><input type="checkbox" checked={confirmed}
+                onChange={(event) => setConfirmed(event.target.checked)} /> 머리부터 허리까지 담긴 이미지예요</label>
+            <div className="dohwa-studio-buttons">
+                <button type="button" onClick={() => dialog.current?.close()}>취소</button>
+                <button type="button" onClick={() => upload.current?.click()}>다른 이미지 선택</button>
+                <button type="button" className="dohwa-studio-primary" onClick={confirmImage}
+                    disabled={!confirmed}>편집에 사용</button>
+            </div>
+        </dialog>
+    </main>
+}
