@@ -1,0 +1,207 @@
+.work-rooms {
+    --room-ink: #2c1945;
+    --room-muted: #665879;
+    --room-purple: #7134cd;
+    --room-border: #e2d7ef;
+    --room-tint: #f5effc;
+    width: min(100%, 1320px);
+    min-height: 65vh;
+    margin-inline: auto;
+    padding: clamp(22px, 4vw, 48px);
+    color: var(--room-ink);
+    background: linear-gradient(180deg, #faf7ff 0, #fff 280px);
+    text-align: left;
+}
+
+.work-rooms, .work-rooms * { box-sizing: border-box; }
+.work-rooms h1, .work-rooms h2, .work-rooms h3, .work-rooms p { margin: 0; }
+.work-rooms h1 { font-size: clamp(24px, 4vw, 42px); line-height: 1.2; }
+.work-rooms h2 { font-size: 21px; }
+.work-rooms h3 { font-size: 18px; overflow-wrap: anywhere; }
+
+.work-rooms button {
+    border: 1px solid #bfa5e9;
+    border-radius: 999px;
+    padding: 8px 15px;
+    min-height: 38px;
+    background: #fff;
+    color: #632aa7;
+    font: inherit;
+    font-weight: 650;
+    cursor: pointer;
+}
+
+.work-rooms button:hover:not(:disabled) { box-shadow: 0 0 0 2px #dbc6fb; }
+.work-rooms button:disabled { opacity: .55; cursor: default; }
+.work-rooms :focus-visible { outline: 2px solid var(--room-purple); outline-offset: 3px; }
+
+.work-rooms button.work-rooms-primary,
+.work-rooms-filters button[aria-pressed="true"] {
+    background: var(--room-purple);
+    border-color: var(--room-purple);
+    color: #fff;
+}
+
+.work-rooms-heading, .work-rooms-actions, .work-rooms-filters, .work-rooms-card-meta {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 9px;
+}
+
+.work-rooms-heading { justify-content: space-between; gap: 16px; }
+.work-rooms-filters { margin-block: 22px; }
+.work-rooms-notice { padding: 12px; background: var(--room-tint); border-radius: 10px; }
+
+.work-rooms-featured {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 14px;
+    margin-block: 16px 28px;
+}
+
+.work-rooms-card {
+    min-width: 0;
+    display: flex;
+    border: 1px solid var(--room-border);
+    border-radius: 14px;
+    overflow: hidden;
+    background: #fff;
+}
+
+.work-rooms-card-featured { flex-direction: column; box-shadow: 0 6px 18px #39196e0a; }
+.work-rooms-card-featured:first-child:not(:only-child) { grid-row: span 2; }
+.work-rooms-card-featured:only-child { grid-column: 1 / -1; }
+
+.work-rooms-cover {
+    position: relative;
+    flex: 0 0 110px;
+    overflow: hidden;
+    background: linear-gradient(130deg, #e8d7fa, #fff5ec);
+}
+
+.work-rooms-card-featured .work-rooms-cover { flex: 1 0 108px; }
+.work-rooms-card-featured:first-child .work-rooms-cover { min-height: 230px; }
+
+.work-rooms-cover img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.work-rooms-card-body {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    flex: 1;
+    padding: 12px 16px;
+    min-width: 0;
+}
+
+.work-rooms-card-featured .work-rooms-card-body {
+    display: grid;
+    flex: none;
+}
+
+.work-rooms-card-body p { margin-top: 4px; color: var(--room-muted); font-size: 14px; }
+.work-rooms-card-meta button { margin-left: auto; }
+.work-rooms-count { color: var(--room-muted); white-space: nowrap; }
+
+.work-rooms-tag, .work-rooms-countdown {
+    border-radius: 999px;
+    padding: 4px 10px;
+    width: max-content;
+    background: var(--room-tint);
+    color: #552589;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.work-rooms-cover .work-rooms-tag { position: absolute; top: 10px; left: 10px; }
+.work-rooms-countdown { font-variant-numeric: tabular-nums; }
+
+.work-rooms-pin {
+    position: absolute;
+    top: 13px;
+    right: 14px;
+    max-width: 46%;
+    padding: 8px 11px;
+    background: #fff5d9;
+    color: #403043;
+    border-radius: 2px;
+    transform: rotate(4deg);
+    box-shadow: 0 4px 9px #39292926;
+    font-size: 13px;
+}
+
+.work-rooms-list { display: grid; gap: 8px; margin-top: 22px; }
+.work-rooms-list h2 { margin-bottom: 4px; }
+
+.work-rooms-dialog {
+    width: min(calc(100% - 32px), 500px);
+    max-height: calc(100dvh - 32px);
+    padding: clamp(18px, 4vw, 32px);
+    border: 1px solid var(--room-border);
+    border-radius: 18px;
+    background: #fff;
+    color: var(--room-ink);
+    text-align: left;
+    box-shadow: 0 16px 60px #2513432b;
+}
+
+.work-rooms-dialog::backdrop { background: rgb(31 21 48 / 43%); }
+.work-rooms-form { display: grid; gap: 12px; margin-top: 15px; }
+.work-rooms-form p { color: var(--room-muted); font-size: 14px; }
+.work-rooms-form label { display: grid; gap: 5px; font-weight: 650; }
+
+.work-rooms-form :is(input:not([type="radio"]), select) {
+    width: 100%;
+    border: 1px solid #bfa5e9;
+    border-radius: 9px;
+    padding: 10px 12px;
+    background: #fdfbff;
+    color: var(--room-ink);
+    font: inherit;
+}
+
+.work-rooms-visibility {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    padding: 7px 0 0;
+    border: 0;
+    margin: 0;
+}
+
+.work-rooms-visibility legend { padding: 0; font-weight: 650; }
+.work-rooms-visibility label {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+    border: 1px solid var(--room-border);
+    border-radius: 999px;
+    padding: 8px;
+    cursor: pointer;
+}
+
+.work-rooms-visibility label:has(input:checked) { background: var(--room-tint); }
+.work-rooms-visibility input { accent-color: var(--room-purple); }
+.work-rooms-toggle-password { justify-self: end; }
+.work-rooms-form .work-rooms-error { color: #9d2246; }
+.work-rooms-dialog footer { justify-content: flex-end; margin-top: 5px; }
+
+@media (max-width: 760px) {
+    .work-rooms-featured { grid-template-columns: 1fr; }
+    .work-rooms-card-featured:first-child:not(:only-child) { grid-row: auto; }
+    .work-rooms-card-featured:first-child .work-rooms-cover { min-height: 175px; }
+    .work-rooms-list .work-rooms-card-body { align-items: flex-start; flex-direction: column; }
+}
+
+@media (max-width: 420px) {
+    .work-rooms-list .work-rooms-cover { flex-basis: 65px; }
+    .work-rooms-card-body { padding: 10px; }
+}

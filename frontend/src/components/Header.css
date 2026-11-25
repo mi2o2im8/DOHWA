@@ -121,3 +121,13 @@
         padding: 9px 12px;
     }
 }
+
+
+/* 로그아웃 글자가 한 줄에 들어가도록 설정 */
+.header-actions .header-logout {
+    width: auto;
+    flex-shrink: 0;
+    padding-inline: 12px;
+    border-radius: 999px;
+    white-space: nowrap;
+}

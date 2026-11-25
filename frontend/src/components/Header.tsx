@@ -48,6 +48,7 @@ function Header() {
                     {session && (
                         <button
                             type="button"
+                            className='header-logout'
                             onClick={async () => {
                                 const { error } = await supabase.auth.signOut({ scope: 'local' })
 
