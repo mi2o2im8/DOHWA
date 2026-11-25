@@ -1,0 +1,414 @@
+/* 도화 메인 홈 */
+
+.dohwa-home {
+  --home-ink: #322b43;
+  --home-muted: #655d73;
+  --home-purple: #8052b7;
+  --home-line: #eae4f1;
+  --home-gutter: clamp(18px, 3.4vw, 48px);
+  padding: clamp(36px, 5vw, 72px) 0 72px;
+  background: #fcfbfd;
+  color: var(--home-ink);
+}
+
+.dohwa-home,
+.dohwa-home * {
+  box-sizing: border-box;
+}
+
+.dohwa-home h1,
+.dohwa-home h2,
+.dohwa-home h3,
+.dohwa-home p {
+  margin: 0;
+}
+
+.dohwa-home a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.dohwa-home :is(a, button):focus-visible {
+  outline: 2px solid var(--home-purple);
+  outline-offset: 3px;
+}
+
+.dohwa-home__content {
+  width: 100%;
+  max-width: 1480px;
+  margin-inline: auto;
+  padding-inline: var(--home-gutter);
+}
+
+.dohwa-home__heading {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  justify-content: space-between;
+  gap: 12px 16px;
+  margin-bottom: clamp(18px, 2.6vw, 34px);
+}
+
+.dohwa-home__heading h1 {
+  font-size: clamp(29px, 4vw, 56px);
+  line-height: 1.18;
+  letter-spacing: -.04em;
+}
+
+.dohwa-home__heading h1 em {
+  color: var(--home-purple);
+  font-style: normal;
+}
+
+.dohwa-home__heading h2 {
+  font-size: clamp(23px, 3vw, 38px);
+  letter-spacing: -.035em;
+}
+
+.dohwa-home__heading p,
+.dohwa-home__virtual p {
+  margin-top: 8px;
+  color: var(--home-muted);
+  font-size: 14px;
+  line-height: 1.65;
+}
+
+.dohwa-home__heading > a,
+.dohwa-home__controls button {
+  color: #7045a1;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+/* ⭐ 작업방 캐러셀 */
+
+.dohwa-home__room-viewport {
+  container-type: inline-size;
+  overflow: clip;
+  padding-block: 4px;
+  cursor: grab;
+  touch-action: pan-y;
+  user-select: none;
+}
+
+.dohwa-home__room-viewport.is-dragging,
+.dohwa-home__room-viewport.is-dragging a {
+  cursor: grabbing;
+}
+
+.dohwa-home__room-track {
+  display: flex;
+  width: max-content;
+  will-change: transform;
+}
+
+.dohwa-home__room-group {
+  --room-gap: clamp(12px, 1.7vw, 24px);
+  display: grid;
+  flex: none;
+  width: calc(100cqw + var(--room-gap));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--room-gap);
+  padding-inline-end: var(--room-gap);
+}
+
+.dohwa-home__room,
+.dohwa-home__story {
+  overflow: hidden;
+  border: 1px solid var(--home-line);
+  border-radius: 14px;
+  background: #fff;
+}
+
+.dohwa-home__room > img,
+.dohwa-home__story > img,
+.dohwa-home__clip-image > img,
+.dohwa-home__artist-image > img {
+  display: block;
+  width: 100%;
+  object-fit: cover;
+}
+
+.dohwa-home__room > img {
+  aspect-ratio: 1.94;
+}
+
+.dohwa-home__room-body {
+  padding: clamp(14px, 1.6vw, 22px);
+}
+
+.dohwa-home__tag {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 20px;
+  background: #f0e5fa;
+  color: #7045a1;
+  font-size: 11px;
+}
+
+.dohwa-home__room-body h2 {
+  margin-top: 7px;
+  font-size: clamp(15px, 1.4vw, 20px);
+}
+
+.dohwa-home__room-footer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  margin-top: 13px;
+  color: var(--home-muted);
+  font-size: 12px;
+}
+
+.dohwa-home__room-footer a,
+.dohwa-home__virtual a {
+  display: inline-block;
+  padding: 9px 13px;
+  border-radius: 8px;
+  background: #f0e5fa;
+  color: #7045a1;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.dohwa-home__controls {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 8px;
+}
+
+.dohwa-home__controls button {
+  padding: 6px;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+/* ⭐ 클립 2개와 버추얼 제작 */
+
+.dohwa-home__discovery {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(20px, 3vw, 42px);
+  margin-top: clamp(36px, 5vw, 72px);
+}
+
+.dohwa-home__clips {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(12px, 1.5vw, 22px);
+}
+
+.dohwa-home__clip-image {
+  position: relative;
+  overflow: hidden;
+  border-radius: 11px;
+}
+
+.dohwa-home__clip-image img {
+  aspect-ratio: 16 / 9;
+}
+
+.dohwa-home__clip-image span {
+  position: absolute;
+  right: 8px;
+  bottom: 8px;
+  padding: 4px 8px;
+  border-radius: 5px;
+  background: #251b37d9;
+  color: white;
+}
+
+.dohwa-home__clip strong,
+.dohwa-home__clip small {
+  display: block;
+  margin-top: 7px;
+}
+
+.dohwa-home small {
+  color: var(--home-muted);
+  font-size: 12px;
+}
+
+.dohwa-home__virtual {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  align-items: center;
+  min-height: clamp(230px, 28vw, 380px);
+  overflow: hidden;
+  border-radius: 16px;
+  background: #f0e6fa;
+}
+
+.dohwa-home__virtual img {
+  position: absolute;
+  inset: 0 0 0 auto;
+  z-index: -2;
+  width: 55%;
+  height: 100%;
+  object-fit: cover;
+  object-position: right center;
+}
+
+.dohwa-home__virtual::before {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(90deg, #f0e6fa 37%, #f0e6faee 49%, transparent 75%);
+  content: '';
+}
+
+.dohwa-home__virtual > div {
+  width: 75%;
+  padding: clamp(20px, 2.8vw, 40px);
+}
+
+.dohwa-home__virtual h2 {
+  font-size: clamp(17px, 2vw, 29px);
+  line-height: 1.4;
+}
+
+.dohwa-home__virtual a {
+  margin-top: 20px;
+  background: var(--home-purple);
+  color: white;
+}
+
+/* ⭐ 작가 갤러리와 작품 호버 효과 */
+
+.dohwa-home__gallery {
+  margin-block: clamp(44px, 7vw, 104px);
+  padding-block: clamp(32px, 5vw, 70px);
+  background: #f5effc;
+}
+
+.dohwa-home__artist-row {
+  display: flex;
+  gap: clamp(20px, 3vw, 50px);
+  overflow-x: auto;
+  padding: 18px max(var(--home-gutter), 6vw) 14px;
+  scrollbar-width: none;
+}
+
+.dohwa-home__artist-row + .dohwa-home__artist-row {
+  margin-top: clamp(12px, 2vw, 32px);
+}
+
+.dohwa-home__artist-tile {
+  flex: 0 0 clamp(245px, 36vw, 720px);
+  min-width: 0;
+}
+
+.dohwa-home__artist-image {
+  overflow: hidden;
+  border-radius: 10px;
+  transform: skewX(-5deg);
+  transition: box-shadow .2s ease-out;
+}
+
+.dohwa-home__artist-image img {
+  aspect-ratio: 1.69;
+  transform: skewX(5deg) scale(1.13);
+}
+
+.dohwa-home__artist-caption {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 10px 2px 0;
+}
+
+.dohwa-home__artist-caption > span {
+  margin-left: auto;
+  color: var(--home-purple);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .dohwa-home__artist-tile:hover .dohwa-home__artist-image {
+    box-shadow: 0 9px 18px #39255335;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .dohwa-home__artist-tile:focus-visible .dohwa-home__artist-image {
+    animation: dohwa-home-lift .44s ease-out both;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .dohwa-home__artist-tile:hover .dohwa-home__artist-image {
+      animation: dohwa-home-lift .44s ease-out both;
+    }
+  }
+}
+
+@keyframes dohwa-home-lift {
+  0% { transform: translateY(0) skewX(-5deg); }
+  42% { transform: translateY(-11px) skewX(-5deg); }
+  68% { transform: translateY(-3px) skewX(-5deg); }
+  100% { transform: translateY(-6px) skewX(-5deg); }
+}
+
+/* ⭐ 창작자들의 이야기 */
+
+.dohwa-home__stories {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: clamp(12px, 1.35vw, 20px);
+}
+
+.dohwa-home__story > img {
+  aspect-ratio: 1.65;
+}
+
+.dohwa-home__story > div {
+  padding: 12px;
+}
+
+.dohwa-home__story h3 {
+  margin-block: 7px;
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+@media (max-width: 1100px) {
+  .dohwa-home__stories { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+@media (max-width: 850px) {
+  .dohwa-home__discovery { grid-template-columns: minmax(0, 1fr); }
+}
+
+@media (max-width: 760px) {
+  .dohwa-home__room-group { width: max-content; grid-template-columns: repeat(3, clamp(210px, 76cqw, 410px)); }
+  .dohwa-home__artist-tile { flex-basis: clamp(220px, 72vw, 420px); }
+  .dohwa-home__stories { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+.dohwa-home__novel {
+  margin-top: clamp(42px, 6vw, 78px);
+}
+
+.dohwa-home__novel-banner {
+  padding: clamp(20px, 3vw, 38px);
+  border: 1px solid var(--home-line);
+  border-radius: 16px;
+  background: linear-gradient(110deg, #f1e9fd, #fff0f6);
+}
+
+.dohwa-home__novel-banner p {
+  margin-top: 8px;
+  color: var(--home-muted);
+  line-height: 1.65;
+}
+
+.dohwa-home__novel-banner a {
+  display: inline-block;
+  margin-top: 15px;
+  color: #7045a1;
+  font-size: 13px;
+  font-weight: 700;
+}
