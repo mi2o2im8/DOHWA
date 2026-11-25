@@ -25,6 +25,7 @@ export type PublicVirtual = {
 
 const media = (file: string) => `${import.meta.env.BASE_URL}virtual-demo/${file}`
 
+// ⭐ 공개 작품 샘플
 const artist = {
     id: 'seoon',
     name: '서온',
@@ -32,7 +33,6 @@ const artist = {
     avatarUrl: media('avatar.webp'),
 }
 
-// ⭐ 샘플 데이터. 작가가 공개한 작품만 나열합니다.
 const sampleWorks: readonly PublicVirtual[] = [
     {
         id: 'moon-collector',
@@ -88,17 +88,55 @@ const sampleWorks: readonly PublicVirtual[] = [
     },
 ]
 
-// ⭐ 실제 API 연동 지점. 서버는 공개 상태를 확인하고 공개 필드만 응답합니다.
-// 편집 원본, 분리 레이어, 리깅 데이터는 서버에서 응답 필드에서 제외합니다.
-// 공개 목록·연관 작품은 카드용 필드만 조회하고, 상세는 id로 조회합니다.
-export function listPublicVirtuals() {
-    return sampleWorks
+// ⭐ 갤러리 정렬 옵션
+export const virtualGallerySorts = [
+    { value: 'recommended', label: '추천순' },
+    { value: 'popular', label: '인기순' },
+    { value: 'views', label: '조회순' },
+    { value: 'likes', label: '좋아요순' },
+] as const
+
+type VirtualGallerySort = (typeof virtualGallerySorts)[number]['value']
+
+// 샘플 인기순에 사용하는 조회 대비 좋아요 비율
+function engagementRate(work: PublicVirtual) {
+    return work.viewCount > 0 ? work.likeCount / work.viewCount : 0
 }
 
+// ⭐ 갤러리 목록 조회. 실제 API 연동 시 이 함수에서 목록을 가져옵니다.
+export function listPublicVirtuals(
+    query = '',
+    sort: VirtualGallerySort = 'recommended',
+) {
+    const keyword = query.trim().normalize('NFC').toLocaleLowerCase('ko-KR')
+
+    const matches = sampleWorks.filter((work) =>
+        [work.title, work.artist.name].some((text) =>
+            text.normalize('NFC').toLocaleLowerCase('ko-KR').includes(keyword),
+        ),
+    )
+
+    switch (sort) {
+        case 'popular':
+            return matches.sort((a, b) =>
+                engagementRate(b) - engagementRate(a) || b.viewCount - a.viewCount,
+            )
+        case 'views':
+            return matches.sort((a, b) => b.viewCount - a.viewCount)
+        case 'likes':
+            return matches.sort((a, b) => b.likeCount - a.likeCount)
+        default:
+            // 추천순은 샘플 배열의 등록 순서로 표시
+            return matches
+    }
+}
+
+// ⭐ 상세 페이지에서 작품 ID로 공개 작품 조회
 export function findPublicVirtual(id: string | undefined) {
     return sampleWorks.find((work) => work.id === id)
 }
 
+// ⭐ 같은 작가의 다른 공개 작품 조회
 export function listRelatedVirtuals(work: PublicVirtual) {
     return sampleWorks.filter(
         (item) => item.artist.id === work.artist.id && item.id !== work.id,

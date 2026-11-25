@@ -11,7 +11,8 @@ import RoomsPage from './pages/RoomsPage'
 // 클립
 import ClipsPage from './pages/ClipsPage'
 // 작가 찾기
-import ArtistsPage from './pages/ArtistsPage'
+// import ArtistsPage from './pages/ArtistsPage'
+import ArtistPage from './pages/artist/ArtistPage'
 // 미연시
 import StoryPage from './pages/StoryPage'
 
@@ -23,7 +24,7 @@ import NotificationPage from './pages/account/notifications/NotificationPage'
 
 // 버추얼 페이지 폴더 분리
 import VirtualGalleryPage from './pages/virtual/gallery/VirtualGalleryPage'
-// ⭐ 공개 상세 페이지
+// 공개 상세 페이지
 import VirtualDetailPage from './pages/virtual/gallery/VirtualDetailPage'
 import VirtualPage from './pages/virtual/studio/VirtualPage'
 
@@ -46,10 +47,11 @@ function App() {
         {/* 클립 */}
         <Route path='/clip' element={<ClipsPage />} />
         {/* 작가 찾기 */}
-        <Route path='/artist' element={<ArtistsPage />} />
+        {/* <Route path='/artist' element={<ArtistsPage />} /> */}
+        <Route path="/artist" element={<ArtistPage />} />
         {/* 나의 버추얼 */}
         <Route path="/virtual" element={<VirtualGalleryPage />} />
-        {/* ⭐ 갤러리 카드에서 여는 공개 상세 */}
+        {/* 갤러리 카드에서 여는 공개 상세 */}
         <Route path="/virtual/:virtualId" element={<VirtualDetailPage />} />
         <Route path="/virtual/create" element={<VirtualPage />} />
 

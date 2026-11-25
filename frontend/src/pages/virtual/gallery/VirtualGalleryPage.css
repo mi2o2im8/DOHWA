@@ -1,7 +1,8 @@
 .virtual-gallery {
-    width: min(100%, 1056px);
+    /* ⭐ 작가 찾기와 본문 폭 및 여백 맞춤 */
+    width: 100%;
     margin-inline: auto;
-    padding: 26px clamp(16px, 4vw, 42px);
+    padding: 40px clamp(12px, 2vw, 40px) 64px;
     box-sizing: border-box;
     background: #fbf9fc;
     color: #24212e;
@@ -37,10 +38,11 @@
     border-radius: 5px;
 }
 
+/* ⭐ 화면 너비에 따라 카드 열 수 조절 */
 .virtual-gallery-cards {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(min(100%, 140px), 190px));
-    gap: 14px;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 180px), 1fr));
+    gap: 16px;
     margin: 0;
     padding: 0;
     list-style: none;
@@ -62,7 +64,8 @@
 
 .virtual-gallery-cards img {
     width: 100%;
-    aspect-ratio: 4 / 3;
+    /* ⭐ 넓은 카드에서 썸네일 높이 축소 */
+    aspect-ratio: 3 / 2;
     object-fit: cover;
     object-position: center 22%;
     margin-bottom: 7px;
@@ -82,4 +85,49 @@
     .virtual-gallery-cards {
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
+}
+
+/* ⭐ 갤러리 검색 및 정렬 */
+.virtual-gallery-filters {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: end;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.virtual-gallery-filters label {
+    display: grid;
+    gap: 4px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.virtual-gallery-filters label:first-child {
+    flex: 1 1 200px;
+    max-width: 320px;
+    min-width: 0;
+}
+
+.virtual-gallery-filters :is(input, select) {
+    min-width: 0;
+    min-height: 40px;
+    padding: 7px 10px;
+    border: 1px solid #cbc4d5;
+    border-radius: 5px;
+    background: #fff;
+    color: #24212e;
+    color-scheme: light;
+    font: inherit;
+    font-weight: 400;
+}
+
+.virtual-gallery-filters :is(input, select):focus-visible {
+    outline: 2px solid #7940d5;
+    outline-offset: 2px;
+}
+
+.virtual-gallery-empty {
+    padding: 18px 0;
+    color: #625b6d;
 }
