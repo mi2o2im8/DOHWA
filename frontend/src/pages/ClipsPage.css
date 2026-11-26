@@ -1,0 +1,631 @@
+/* 클립 페이지 전용 레이아웃 */
+.dc-page,
+.dc-page * {
+    box-sizing: border-box;
+}
+
+.dc-page {
+    height: calc(100dvh - 80px);
+    min-height: 0;
+    flex: 0 0 auto;
+    display: flex;
+    flex-direction: column;
+    background: #faf8fd;
+    color: #211a30;
+    color-scheme: light;
+    text-align: left;
+    font-size: 15px;
+    --dc-purple: #7939e4;
+}
+
+/* 공통 버튼 및 아이콘 */
+.dc-page button {
+    font: inherit;
+    color: inherit;
+}
+
+.dc-page svg {
+    width: 26px;
+    height: 26px;
+    flex-shrink: 0;
+}
+
+/* 상단 클립 올리기 버튼 */
+.dc-toolbar {
+    width: 100%;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 12px 4% 6px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.dc-toolbar button {
+    background: var(--dc-purple);
+    color: white;
+    border: 0;
+    border-radius: 12px;
+    padding: 10px 20px;
+    font-weight: 700;
+}
+
+/* 세로 스크롤 스냅 및 클립 목록 */
+.dc-feed {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    scroll-snap-type: y mandatory;
+    overscroll-behavior-y: contain;
+    scrollbar-width: none;
+}
+
+.dc-feed::-webkit-scrollbar {
+    display: none;
+}
+
+.dc-card {
+    height: 100%;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+    padding: 8px 4% 18px;
+}
+
+/* PC 3열 레이아웃 */
+.dc-layout {
+    height: 100%;
+    max-width: 1180px;
+    margin: auto;
+    display: grid;
+    grid-template-columns: minmax(150px, 0.75fr) minmax(0, 1.4fr) minmax(205px, 1fr);
+    gap: clamp(18px, 3vw, 44px);
+    align-items: stretch;
+}
+
+.dc-note,
+.dc-process {
+    min-width: 0;
+    padding-top: 36px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+/* 공통 소제목 */
+.dc-page h2 {
+    color: inherit;
+    font-size: clamp(19px, 2vw, 26px);
+    font-weight: 750;
+    margin: 0;
+    line-height: 1.3;
+}
+
+/* 작가 프로필 및 닉네임 */
+.dc-author {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+}
+
+.dc-author strong {
+    overflow-wrap: anywhere;
+}
+
+.dc-avatar {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    object-fit: cover;
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    background: linear-gradient(135deg,#a77ae9,#edc6e9);
+    color: #fff;
+    font-weight: 700;
+}
+
+/* 작업 노트 및 색상칩 */
+.dc-note p,
+.dc-panel p {
+    line-height: 1.7;
+    overflow-wrap: anywhere;
+}
+
+.dc-colors {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 8px;
+}
+
+.dc-colors span {
+    width: 40px;
+    height: 40px;
+    border-radius: 9px;
+}
+
+/* 영상 플레이어 및 제목 */
+.dc-center {
+    position: relative;
+    min-width: 0;
+    min-height: 0;
+    display: flex;
+    justify-content: center;
+}
+
+.dc-player {
+    height: 100%;
+    width: 100%;
+    max-width: 100%;
+    position: relative;
+    background: #e9e1f4;
+    border-radius: 22px;
+    overflow: hidden;
+    isolation: isolate;
+}
+
+.dc-player video {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: contain;
+    background: #15121a;
+}
+
+.dc-title {
+    position: absolute;
+    z-index: 2;
+    left: 20px;
+    top: 18px;
+    right: 20px;
+    margin: 0;
+    font-size: clamp(17px, 2vw, 25px);
+    line-height: 1.3;
+    font-weight: 750;
+    letter-spacing: -.03em;
+    color: white;
+    text-shadow: 0 1px 6px #38264d;
+    pointer-events: none;
+}
+
+/* 개별 영상 빈 상태 */
+.dc-empty {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 20px;
+    text-align: center;
+    color: #6c5786;
+    background: linear-gradient(150deg,#eee5fb,#dcd0ee);
+}
+
+.dc-empty svg {
+    width: 48px;
+    height: 48px;
+}
+
+.dc-empty small {
+    font-size: 12px;
+}
+
+/* ⭐ 제작 타임라인과 반응 표시 */
+.dc-chapters {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding-left: 24px;
+    position: relative;
+}
+
+.dc-chapters::before {
+    content: '';
+    position: absolute;
+    left: 7px;
+    top: 32px;
+    bottom: 32px;
+    width: 2px;
+    background: #c6a7fa;
+}
+
+.dc-chapter {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    min-height: 66px;
+    padding: 5px 10px 5px 5px;
+    position: relative;
+    border: 1px solid #e4d9f8;
+    border-radius: 14px;
+    background: transparent;
+    text-align: left;
+    cursor: pointer;
+    font-size: 14px !important;
+}
+
+.dc-chapter::before {
+    content: '';
+    position: absolute;
+    left: -23px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    border: 2px solid #b38aed;
+    background: #faf8fd;
+}
+
+.dc-chapter.is-current {
+    background: #eee5fb;
+    border-color: #cbb1f6;
+}
+
+.dc-chapter.is-current::before {
+    background: var(--dc-purple);
+    border-color: var(--dc-purple);
+}
+
+.dc-chapter:disabled {
+    cursor: default;
+}
+
+.dc-chapter > span:nth-child(2) {
+    flex: 1;
+}
+
+.dc-chapter svg {
+    color: #796a98;
+    width: 24px;
+    height: 24px;
+}
+
+.dc-thumb {
+    width: 54px;
+    height: 54px;
+    flex-shrink: 0;
+    border-radius: 10px;
+    overflow: hidden;
+    opacity: .75;
+}
+
+.dc-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* PC 반응 버튼 */
+.dc-desktop-reactions {
+    margin-top: auto;
+}
+
+.dc-reactions {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* 반응 버튼 상태 및 배치 */
+.dc-reactions > button {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-height: 36px;
+    font-weight: 700;
+}
+
+/* PC에서 모바일 전용 요소 숨김 */
+.dc-mobile-author,
+.dc-mobile-reactions {
+    display: none;
+}
+
+.dc-panel {
+    display: none;
+}
+
+/* ⭐ 모바일 세로 영상과 하단 패널 */
+@media (max-width: 760px) {
+
+    /* 모바일 페이지 배경 및 상단 버튼 */
+    .dc-page {
+        background: #090909;
+        color: #fff;
+        color-scheme: dark;
+    }
+
+    .dc-toolbar {
+        padding: 6px 14px;
+    }
+
+    .dc-toolbar button {
+        padding: 6px 12px;
+        font-size: 12px;
+    }
+
+    /* 모바일 영상 레이아웃 */
+    .dc-card {
+        padding: 4px 12px 12px;
+    }
+
+    .dc-layout {
+        display: block;
+    }
+
+    .dc-note,
+    .dc-process {
+        display: none;
+    }
+
+    .dc-center {
+        height: 100%;
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+        justify-content: flex-start;
+    }
+
+    .dc-title {
+        position: static;
+        color: #fff;
+        width: 100%;
+        font-size: 20px;
+        text-shadow: none;
+    }
+
+    .dc-player {
+        flex: 1;
+        min-height: 0;
+        width: 100%;
+        max-width: 440px;
+        border-radius: 20px;
+    }
+
+    /* 영상 내부 작가 프로필 */
+    .dc-mobile-author {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        z-index: 2;
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        min-height: 44px;
+        border: 0;
+        border-radius: 22px;
+        background: #19132380;
+        color: #fff !important;
+        padding: 4px 9px;
+        cursor: pointer;
+    }
+
+    .dc-mobile-author .dc-avatar {
+        width: 32px;
+        height: 32px;
+    }
+
+    .dc-mobile-author svg {
+        width: 20px;
+        height: 20px;
+    }
+
+    /* 영상 내부 반응 버튼 */
+    .dc-mobile-reactions {
+        display: block;
+        position: absolute;
+        right: 6px;
+        bottom: 76px;
+        color: #fff;
+        text-shadow: 0 1px 4px #000;
+        pointer-events: auto;
+    }
+
+    .dc-reactions {
+        gap: 4px;
+    }
+
+    .dc-reactions > button {
+        flex-direction: column;
+        justify-content: center;
+        gap: 2px;
+        width: 44px;
+        min-height: 44px;
+        font-size: 11px;
+        line-height: 1.2;
+    }
+
+    .dc-reactions svg {
+        width: 22px;
+        height: 22px;
+        filter: drop-shadow(0 1px 2px #333);
+    }
+
+    /* 작업 정보 하단 패널 */
+    .dc-panel[open] {
+        display: block;
+        position: fixed;
+        inset: auto 0 0;
+        margin: 0;
+        width: 100%;
+        max-width: none;
+        max-height: 70dvh;
+        border: 0;
+        border-radius: 22px 22px 0 0;
+        background: #faf8fd;
+        color: #211a30;
+        color-scheme: light;
+        padding: 0;
+    }
+
+    .dc-panel::backdrop {
+        background: #0009;
+    }
+
+    .dc-panel-inner {
+        padding: 18px 20px max(24px, env(safe-area-inset-bottom));
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    /* 작업 정보 탭 및 닫기 버튼 */
+    .dc-panel-tabs {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .dc-panel-tabs button {
+        min-height: 44px;
+        border: 0;
+        background: transparent;
+        padding: 8px 12px;
+        border-radius: 10px;
+        cursor: pointer;
+    }
+
+    .dc-panel-tabs button[aria-pressed='true'] {
+        background: #eee4ff;
+        color: #7939e4;
+        font-weight: 700;
+    }
+
+    .dc-panel-tabs .dc-close {
+        margin-left: auto;
+        display: grid;
+        place-items: center;
+    }
+}
+
+/* ⭐ 버튼 인터랙션과 작가 홈 링크 */
+.dc-page button:not(:disabled),
+
+.dc-page a {
+    cursor: pointer;
+    transition: background-color .18s, color .18s, transform .15s;
+}
+
+.dc-page button:not(:disabled):active {
+    transform: scale(.96);
+}
+.dc-page button:focus-visible,
+
+.dc-page a:focus-visible {
+    outline: 2px solid #a67be7;
+    outline-offset: 3px;
+}
+.dc-toolbar button:hover,
+
+.dc-modal button:hover {
+    background: #6226c7;
+}
+
+.dc-author {
+    color: inherit;
+    text-decoration: none;
+}
+
+.dc-author:hover {
+    color: var(--dc-purple);
+}
+
+.dc-reactions > button {
+    align-self: flex-start;
+    border: 0;
+    padding: 4px;
+    background: transparent;
+}
+
+.dc-reactions > button:hover {
+    color: #9a65ef;
+}
+
+.dc-reactions .is-liked {
+    color: #e54b68;
+}
+
+.dc-reactions .is-bookmarked {
+    color: #a77af2;
+}
+.dc-reactions .is-liked svg,
+
+.dc-reactions .is-bookmarked svg {
+    fill: currentColor;
+}
+
+.dc-chapter:not(:disabled):hover {
+    background: #eee5fb;
+}
+
+/* ⭐ 클립 목록 빈 상태 및 기능 안내 창 */
+.dc-feed-empty {
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    text-align: center;
+    padding: 24px;
+}
+
+.dc-feed-empty svg {
+    width: 48px;
+    height: 48px;
+    color: #a68ac8;
+}
+
+.dc-feed-empty p {
+    margin: 0;
+    opacity: .75;
+}
+
+/* 업로드 및 댓글 안내 창 */
+.dc-modal {
+    width: min(400px, calc(100% - 32px));
+    padding: 26px;
+    border: 1px solid #e4d9f8;
+    border-radius: 18px;
+    background: #faf8fd;
+    color: #211a30;
+    color-scheme: light;
+    text-align: left;
+}
+
+.dc-modal::backdrop {
+    background: #0008;
+}
+
+.dc-modal button {
+    display: block;
+    margin-left: auto;
+    border: 0;
+    border-radius: 10px;
+    background: var(--dc-purple);
+    color: white;
+    padding: 10px 22px;
+}
+
+@media (max-width: 760px) {
+
+    /* 프로필 화살표 터치 영역 */
+    .dc-mobile-author button {
+        display: grid;
+        place-items: center;
+        min-width: 44px;
+        min-height: 44px;
+        border: 0;
+        background: transparent;
+        color: white;
+    }
+
+    .dc-mobile-author .dc-author {
+        min-height: 44px;
+        color: white;
+    }
+}
