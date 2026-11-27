@@ -1,0 +1,466 @@
+/* 스테이지 공통 */
+.story-stage {
+    --stage-header-height: 0px;
+    --stage-purple: #824baa;
+    --stage-line: #e7d9ed;
+    width: min(100%, 1100px);
+    margin-inline: auto;
+    background: #fff;
+    color: #40234e;
+    color-scheme: light;
+    text-align: left;
+    font: 15px/1.45 system-ui, sans-serif;
+}
+
+.story-stage,
+.story-stage * {
+    box-sizing: border-box;
+}
+
+.story-stage h1,
+.story-stage h2 {
+    margin: 0;
+    color: inherit;
+    line-height: 1.25;
+}
+
+.story-stage a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.story-stage a:focus-visible,
+.story-stage button:focus-visible,
+.story-stage input:focus-visible,
+.story-stage textarea:focus-visible {
+    outline: 2px solid var(--stage-purple);
+    outline-offset: 2px;
+}
+
+/* 기차역 배너와 이어보기 */
+.stage-hero {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    min-height: clamp(190px, 25vw, 270px);
+    padding: clamp(18px, 4vw, 45px);
+    background:
+        linear-gradient(90deg, #fbf4fc 10%, #fbf4fc 27%, #fbf4fc30 67%),
+        #efe4f5 url('/story-station.webp') right center / auto 100% no-repeat;
+}
+
+.stage-hero h1 {
+    margin-bottom: 10px;
+    font-family: 'Batang', 'Noto Serif KR', serif;
+    font-size: clamp(30px, 5.5vw, 62px);
+}
+
+.stage-resume {
+    display: grid;
+    gap: 4px;
+    align-self: end;
+    min-width: 158px;
+    padding: 11px 15px;
+    border: 1px solid #e6d3ee;
+    background: #fffaf7;
+    text-align: center;
+    font-size: 13px;
+}
+
+.stage-resume span {
+    color: var(--stage-purple);
+}
+
+/* ⭐ 공통 헤더 아래에 함께 고정되는 HOT 작품과 노선도 */
+.stage-sticky {
+    position: sticky;
+    z-index: 10;
+    top: var(--stage-header-height);
+    background: #fff;
+    box-shadow: 0 5px 12px #40234e0d;
+}
+
+.stage-hot {
+    display: grid;
+    grid-template-columns: auto repeat(3, minmax(0, 1fr)) auto;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 14px;
+    background: #faf5fb;
+}
+
+.stage-hot h2 {
+    color: var(--stage-purple);
+    font-size: 17px;
+    font-style: italic;
+}
+
+.stage-hot h2 span {
+    display: block;
+    color: #5d4568;
+    font-size: 11px;
+    font-style: normal;
+}
+
+.stage-hot-work {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+    padding-inline-start: 8px;
+    border-inline-start: 1px solid var(--stage-line);
+    font-size: 13px;
+    line-height: 1.3;
+    overflow-wrap: anywhere;
+}
+
+.stage-hot-work img {
+    width: 52px;
+    height: 45px;
+    border-radius: 5px;
+    object-fit: cover;
+}
+
+.stage-hot-rank {
+    position: absolute;
+    top: 0;
+    left: 8px;
+    padding: 1px 5px;
+    border-radius: 3px;
+    background: var(--stage-purple);
+    color: #fff;
+    font-size: 11px;
+}
+
+.story-stage .stage-button {
+    display: inline-block;
+    padding: 8px 12px;
+    border: 0;
+    border-radius: 7px;
+    background: linear-gradient(#9f6cc2, #77429c);
+    color: #fff;
+    font: inherit;
+    font-size: 13px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.stage-route {
+    position: relative;
+    display: flex;
+    overflow-x: auto;
+    padding: 10px 12px 8px;
+}
+
+.stage-route a {
+    position: relative;
+    flex: 1 0 67px;
+    padding: 22px 4px 3px;
+    text-align: center;
+    white-space: nowrap;
+    font-size: 13px;
+}
+
+.stage-route a::before,
+.stage-route a::after {
+    position: absolute;
+    content: '';
+}
+
+.stage-route a::before {
+    top: 8px;
+    inset-inline: 0;
+    height: 2px;
+    background: #c3a3d6;
+}
+
+.stage-route a:first-child::before {
+    left: 50%;
+}
+
+.stage-route a:last-child::before {
+    right: 50%;
+}
+
+.stage-route a::after {
+    top: 3px;
+    left: calc(50% - 6px);
+    width: 12px;
+    height: 12px;
+    border: 1px solid #ac85c6;
+    border-radius: 50%;
+    background: #fff;
+}
+
+.stage-route a[aria-current] {
+    color: #713b98;
+    font-weight: 750;
+}
+
+.stage-route a[aria-current]::after {
+    background: var(--stage-purple);
+}
+
+/* ⭐ 작품 티켓, 섹션 간격, 목록 끝 스크롤 여백 */
+.stage-catalog {
+    display: grid;
+    gap: 24px;
+    padding: 19px 17px 500px;
+}
+
+.stage-section-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.stage-section-heading h2 {
+    font-size: clamp(17px, 2.35vw, 24px);
+    font-weight: 750;
+}
+
+.stage-section-heading a {
+    color: #71468e;
+    font-size: 13px;
+    white-space: nowrap;
+}
+
+.stage-tickets {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.stage-tickets-compact {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+.stage-ticket {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    padding: 7px;
+    border: 1px solid var(--stage-line);
+    border-radius: 10px;
+    background: #fffafc;
+    box-shadow: inset 0 0 0 2px #fff;
+}
+
+.stage-ticket:hover {
+    border-color: #9f6cc2;
+}
+
+.stage-ticket img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    border-radius: 5px;
+    object-fit: cover;
+    object-position: center 35%;
+}
+
+.stage-ticket-text {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 5px;
+    margin-top: 6px;
+    padding: 6px 4px 2px;
+    border-top: 1px dashed #d2bbde;
+    overflow-wrap: anywhere;
+}
+
+.stage-ticket-text small {
+    color: #6f5679;
+}
+
+.stage-tickets-compact .stage-ticket {
+    flex-direction: row;
+    align-items: stretch;
+    gap: 7px;
+    min-height: 82px;
+    font-size: 13px;
+}
+
+.stage-tickets-compact img {
+    width: 34%;
+    aspect-ratio: auto;
+}
+
+.stage-tickets-compact .stage-ticket-text {
+    margin-top: 0;
+    padding-block: 3px;
+    border-top: 0;
+    border-left: 1px dashed #d2bbde;
+}
+
+/* 상세, 회차, 제작 양식 */
+.stage-detail {
+    max-width: 720px;
+    min-height: calc(100svh - var(--stage-header-height));
+    margin-inline: auto;
+    padding: 28px 18px 48px;
+}
+
+.stage-detail > a,
+.stage-detail-label {
+    color: var(--stage-purple);
+}
+
+.stage-detail h1 {
+    margin-block: 12px;
+    font-size: clamp(24px, 4vw, 36px);
+    font-weight: 750;
+    overflow-wrap: anywhere;
+}
+
+.stage-detail-intro {
+    display: flex;
+    align-items: flex-start;
+    gap: 18px;
+    margin-top: 20px;
+}
+
+.stage-detail-intro img {
+    width: min(35%, 200px);
+    border-radius: 8px;
+}
+
+.stage-detail-intro > div {
+    min-width: 0;
+}
+
+.stage-summary {
+    overflow-wrap: anywhere;
+    white-space: pre-wrap;
+}
+
+.stage-episodes {
+    display: grid;
+    gap: 8px;
+    padding: 0;
+    list-style: none;
+}
+
+.stage-episodes a {
+    display: block;
+    padding: 10px;
+    border-bottom: 1px solid var(--stage-line);
+}
+
+.stage-episode-note {
+    margin-top: 20px;
+    color: #725480;
+}
+
+.stage-form {
+    display: grid;
+    justify-items: start;
+    gap: 14px;
+}
+
+.stage-form label {
+    display: grid;
+    gap: 6px;
+    width: 100%;
+}
+
+.stage-form input,
+.stage-form textarea {
+    width: 100%;
+    padding: 9px;
+    border: 1px solid #cdb9db;
+    border-radius: 6px;
+    background: #fff;
+    color: inherit;
+    font: inherit;
+}
+
+.stage-form textarea {
+    resize: vertical;
+}
+
+/* 모바일 화면과 좁은 HOT 영역 */
+@media (max-width: 800px) {
+    .stage-hot {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 7px;
+    }
+
+    .stage-hot h2 {
+        grid-column: 1 / 3;
+        grid-row: 1;
+    }
+
+    .stage-hot h2 span {
+        display: inline;
+    }
+
+    .stage-hot .stage-button {
+        grid-column: 3;
+        grid-row: 1;
+    }
+}
+
+@media (max-width: 760px) {
+    .stage-catalog {
+        padding-bottom: 80px;
+    }
+}
+
+@media (max-width: 560px) {
+    .stage-hero {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+        background-size: auto, cover;
+    }
+
+    .stage-hot {
+        padding: 6px 8px;
+    }
+
+    .stage-hot h2 {
+        font-size: 14px;
+    }
+
+    .stage-hot h2 span {
+        font-size: 10px;
+    }
+
+    .stage-hot-work {
+        gap: 4px;
+        padding-inline-start: 3px;
+        font-size: 10px;
+    }
+
+    .stage-hot-work img {
+        width: 29px;
+        height: 32px;
+    }
+
+    .stage-hot-rank {
+        left: 3px;
+        padding-inline: 3px;
+        font-size: 9px;
+    }
+
+    .stage-hot .stage-button {
+        padding: 4px;
+        font-size: 10px;
+    }
+
+    .stage-route {
+        padding-block: 5px;
+    }
+
+    .stage-tickets,
+    .stage-tickets-compact {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}

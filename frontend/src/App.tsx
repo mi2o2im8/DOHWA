@@ -8,10 +8,8 @@ import HomePage from './pages/HomePage'
 // 커뮤니티
 // 새 community 폴더에서 페이지를 불러옵니다.
 import CommunityPage from './pages/community/CommunityPage'
-import CommunityDetailPage
-    from './pages/community/CommunityDetailPage'
-import CommunityWritePage
-    from './pages/community/CommunityWritePage'
+import CommunityDetailPage from './pages/community/CommunityDetailPage'
+import CommunityWritePage from './pages/community/CommunityWritePage'
 
 // 작업방
 import RoomsPage from './pages/RoomsPage'
@@ -20,21 +18,19 @@ import ClipsPage from './pages/ClipsPage'
 // 작가 찾기
 // import ArtistsPage from './pages/ArtistsPage'
 import ArtistPage from './pages/artist/ArtistPage'
-// 미연시
-import StoryPage from './pages/StoryPage'
+// 스테이지(미연시)
+import StagePage from './pages/stage/StagePage'
+
 // 계정 관련 페이지
 import LoginPage from './pages/account/auth/LoginPage'
 import SignupPage from './pages/account/signup/SignupPage'
 import MyPage from './pages/account/mypage/MyPage'
-import NotificationPage
-    from './pages/account/notifications/NotificationPage'
+import NotificationPage from './pages/account/notifications/NotificationPage'
 
 // 버추얼 페이지 폴더 분리
-import VirtualGalleryPage
-    from './pages/virtual/gallery/VirtualGalleryPage'
+import VirtualGalleryPage from './pages/virtual/gallery/VirtualGalleryPage'
 // 공개 상세 페이지
-import VirtualDetailPage
-    from './pages/virtual/gallery/VirtualDetailPage'
+import VirtualDetailPage from './pages/virtual/gallery/VirtualDetailPage'
 import VirtualPage from './pages/virtual/studio/VirtualPage'
 
 function App() {
@@ -92,7 +88,7 @@ function App() {
                     element={<VirtualPage />}
                 />
                 {/* 미연시 */}
-                <Route path='/story' element={<StoryPage />} />
+                <Route path='/story' element={<StagePage />} />
 
                 {/* 계정 관련 페이지 */}
                 <Route path='/login' element={<LoginPage />} />
