@@ -1,541 +1,672 @@
 /* ⭐ 커뮤니티 공통 스타일 */
 .dc {
-    --dc-ink: #28213f;
-    --dc-muted: #81798c;
-    --dc-accent: #865cf0;
-    --dc-soft: #f2edff;
-    --dc-line: #eae6ee;
-    width: 100%;
-    background: #fff;
-    color: var(--dc-ink);
-    text-align: left;
-    font: 14px/1.6 'Pretendard', 'Noto Sans KR', system-ui, sans-serif;
+  --dc-ink: #28213f;
+  --dc-muted: #81798c;
+  --dc-accent: #865cf0;
+  --dc-soft: #f2edff;
+  --dc-line: #eae6ee;
+  width: 100%;
+  background: #fff;
+  color: var(--dc-ink);
+  text-align: left;
+  font: 14px/1.6 'Pretendard', 'Noto Sans KR', system-ui, sans-serif;
 }
 
 .dc * {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 .dc a {
-    color: inherit;
-    text-decoration: none;
+  color: inherit;
+  text-decoration: none;
 }
 
 .dc button,
 .dc input,
 .dc select,
 .dc textarea {
-    font: inherit;
-    color: inherit;
+  font: inherit;
+  color: inherit;
 }
 
 .dc button {
-    cursor: pointer;
-    background: #fff;
-    border: 1px solid var(--dc-line);
-    border-radius: 8px;
-    padding: 9px 15px;
+  cursor: pointer;
+  background: #fff;
+  border: 1px solid var(--dc-line);
+  border-radius: 8px;
+  padding: 9px 15px;
 }
 
 .dc button:hover,
 .dc button.on {
-    background: var(--dc-soft);
-    color: var(--dc-accent);
+  background: var(--dc-soft);
+  color: var(--dc-accent);
 }
 
 .dc button:disabled {
-    cursor: default;
-    opacity: .45;
+  cursor: default;
+  opacity: .45;
 }
 
 .dc :focus-visible {
-    outline: 2px solid var(--dc-accent);
-    outline-offset: 3px;
+  outline: 2px solid var(--dc-accent);
+  outline-offset: 3px;
 }
 
 .dc button.dc-primary {
-    background: #865cf0;
-    color: #fff;
-    border-color: #865cf0;
+  background: #865cf0;
+  color: #fff;
+  border-color: #865cf0;
 }
 
 .dc small {
-    color: var(--dc-muted);
+  color: var(--dc-muted);
 }
 
 /* TODAY'S HOT 콜라주 */
 .dc-hero {
-    position: relative;
-    background: radial-gradient(ellipse at 82% 60%, #e8def9 0, transparent 53%), linear-gradient(110deg, #fbf9fc, #f8f5fd);
-    overflow: hidden;
+  position: relative;
+  background: radial-gradient(ellipse at 82% 60%, #e8def9 0, transparent 53%), linear-gradient(110deg, #fbf9fc, #f8f5fd);
+  overflow: hidden;
 }
 
 .dc-hero-inner {
-    max-width: 1400px;
-    margin: auto;
-    min-height: 415px;
-    display: grid;
-    grid-template-columns: 35% 65%;
-    align-items: center;
-    padding: 36px 5% 48px;
+  max-width: 1400px;
+  margin: auto;
+  min-height: 415px;
+  display: grid;
+  grid-template-columns: minmax(0, 35%) minmax(0, 65%);
+  align-items: center;
+  padding: 36px 5% 48px;
 }
 
 .dc-copy {
-    z-index: 2;
-    animation: dc-enter .6s ease both;
+  z-index: 2;
+  animation: dc-enter .6s ease both;
 }
 
 .dc-copy > small {
-    letter-spacing: 2px;
-    color: #8063a4;
-    font-size: 12px;
-    font-weight: 600;
+  letter-spacing: 2px;
+  color: #8063a4;
+  font-size: 12px;
+  font-weight: 600;
 }
 
 .dc-copy h1 {
-    font-family: 'Noto Serif KR', Batang, serif;
-    font-size: clamp(34px, 4.1vw, 65px);
-    font-weight: 500;
-    line-height: 1.25;
-    letter-spacing: -3px;
-    margin: 16px 0;
-    white-space: pre-line;
+  font-family: 'Noto Serif KR', Batang, serif;
+  font-size: clamp(25px, 2.8vw, 40px);
+  font-weight: 500;
+  line-height: 1.25;
+  letter-spacing: -1.4px;
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+  margin: 16px 0;
+  white-space: pre-line;
 }
 
 .dc-copy p {
-    color: #655b76;
-    max-width: 330px;
+  color: #655b76;
+  max-width: 330px;
 }
 
 .dc-collage {
-    position: relative;
-    height: 325px;
-    isolation: isolate;
-    animation: dc-enter .6s ease both;
+  position: relative;
+  height: 325px;
+  isolation: isolate;
+  animation: dc-enter .6s ease both;
 }
 
 .dc-paper {
-    position: absolute;
-    left: -4%;
-    top: 12%;
-    height: 80%;
-    width: 74%;
-    background: repeating-linear-gradient(0deg, #eae3f3 0, #eae3f3 1px, #f9f6fc 1px, #f9f6fc 20px);
-    transform: rotate(6deg);
+  position: absolute;
+  left: -4%;
+  top: 12%;
+  height: 80%;
+  width: 74%;
+  background: repeating-linear-gradient(0deg, #eae3f3 0, #eae3f3 1px, #f9f6fc 1px, #f9f6fc 20px);
+  transform: rotate(6deg);
 }
 
 .dc-print {
-    position: absolute;
-    border: 8px solid #fff;
-    box-shadow: 0 12px 30px #39274f25;
-    overflow: hidden;
-    background: #e2d8eb;
-    border-radius: 2px;
-    transition: transform .35s;
+  position: absolute;
+  border: 8px solid #fff;
+  box-shadow: 0 12px 30px #39274f25;
+  overflow: hidden;
+  background: #e2d8eb;
+  border-radius: 2px;
+  transition: transform .35s;
 }
 
 .dc-print-0 {
-    width: 75%;
-    height: 84%;
-    left: 0;
-    top: 4%;
-    transform: rotate(-5deg);
-    z-index: 2;
+  width: 75%;
+  height: 84%;
+  left: 0;
+  top: 4%;
+  transform: rotate(-5deg);
+  z-index: 2;
 }
 
 .dc-print-1 {
-    width: 35%;
-    height: 47%;
-    right: 0;
-    top: 0;
-    transform: rotate(9deg);
-    z-index: 3;
+  width: 35%;
+  height: 47%;
+  right: 0;
+  top: 0;
+  transform: rotate(9deg);
+  z-index: 3;
 }
 
 .dc-print-2 {
-    width: 30%;
-    height: 43%;
-    right: 0;
-    bottom: 5%;
-    transform: rotate(-9deg);
-    z-index: 4;
+  width: 30%;
+  height: 43%;
+  right: 0;
+  bottom: 5%;
+  transform: rotate(-9deg);
+  z-index: 4;
 }
 
-.dc-print:hover {
-    transform: rotate(0) scale(1.035);
-    z-index: 8;
+.dc-print[href]:hover,
+.dc-print[href]:focus-visible {
+  transform: rotate(0) scale(1.035);
+  z-index: 8;
 }
 
 .dc-note {
-    position: absolute;
-    z-index: 5;
-    bottom: 0;
-    right: 25%;
-    background: #fffdfdef;
-    padding: 15px 23px;
-    transform: rotate(-7deg);
-    box-shadow: 0 9px 25px #35234716;
-    max-width: 50%;
-    pointer-events: none;
+  position: absolute;
+  z-index: 5;
+  bottom: 0;
+  right: 25%;
+  background: #fffdfdef;
+  padding: 15px 23px;
+  transform: rotate(-7deg);
+  box-shadow: 0 9px 25px #35234716;
+  max-width: 50%;
+  pointer-events: none;
 }
 
 .dc-note strong {
-    font-family: serif;
-    font-size: 22px;
-    display: block;
+  font-family: serif;
+  font-size: 22px;
+  display: block;
 }
 
 .dc-hot-empty {
-    position: absolute;
-    inset: 0;
-    display: grid;
-    place-items: center;
-    color: var(--dc-muted);
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: var(--dc-muted);
 }
 
 .dc-controls {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-top: 24px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 24px;
 }
 
 .dc-controls button {
-    border: 0;
-    background: transparent;
-    padding: 5px 9px;
-    font-size: 18px;
+  border: 0;
+  background: transparent;
+  padding: 5px 9px;
+  font-size: 18px;
 }
 
 .dc-controls button.dc-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    padding: 0;
-    background: #c7bfd4;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  padding: 0;
+  background: #c7bfd4;
 }
 
 .dc-controls button.dc-dot.on {
-    background: #594379;
+  background: #594379;
 }
 
 @keyframes dc-enter {
-    from {
-        opacity: .2;
-        transform: translateY(12px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+  from {
+    opacity: .2;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* 목록 상단 및 고정 카테고리 */
 .dc-content {
-    max-width: 1330px;
-    margin: auto;
-    padding: 42px 5% 70px;
-    min-height: 65vh;
+  max-width: 1330px;
+  margin: auto;
+  padding: 42px 5% 70px;
+  min-height: calc(100dvh - var(--dc-header, 80px));
 }
 
 .dc-heading {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18px;
 }
 
 .dc-heading h2 {
-    font-size: 26px;
-    letter-spacing: -1px;
-    margin: 0;
+  font-size: 26px;
+  letter-spacing: -1px;
+  margin: 0;
 }
 
 .dc-categories {
-    position: sticky;
-    top: var(--dc-header, 80px);
-    z-index: 20;
-    display: flex;
-    overflow-x: auto;
-    white-space: nowrap;
-    background: #fffffffa;
-    border-bottom: 1px solid var(--dc-line);
-    backdrop-filter: blur(12px);
+  position: sticky;
+  top: var(--dc-header, 80px);
+  z-index: 20;
+  display: flex;
+  overflow-x: auto;
+  white-space: nowrap;
+  background: #fffffffa;
+  border-bottom: 1px solid var(--dc-line);
+  backdrop-filter: blur(12px);
 }
 
 .dc-categories button {
-    border: 0;
-    border-radius: 0;
-    padding: 15px 20px;
-    background: transparent;
-    color: #716979;
-    border-bottom: 2px solid transparent;
-    flex: 1;
+  border: 0;
+  border-radius: 0;
+  padding: 15px 20px;
+  background: transparent;
+  color: #716979;
+  border-bottom: 2px solid transparent;
+  flex: 1;
 }
 
 .dc-categories button.on {
-    background: transparent;
-    border-bottom-color: var(--dc-accent);
-    color: var(--dc-accent);
-    font-weight: 700;
+  background: transparent;
+  border-bottom-color: var(--dc-accent);
+  color: var(--dc-accent);
+  font-weight: 700;
 }
 
 /* 검색 및 보기 설정 */
 .dc-tools {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    align-items: center;
-    margin: 23px 0 26px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  margin: 23px 0 26px;
 }
 
 .dc-tools input {
-    width: 290px;
-    max-width: 100%;
-    border: 1px solid var(--dc-line);
-    border-radius: 8px;
-    padding: 10px 14px;
-    background: #faf9fc;
+  width: 290px;
+  max-width: 100%;
+  border: 1px solid var(--dc-line);
+  border-radius: 8px;
+  padding: 10px 14px;
+  background: #faf9fc;
 }
 
 .dc-tools select {
-    border: 1px solid var(--dc-line);
-    background: #fff;
-    padding: 9px;
-    border-radius: 8px;
+  border: 1px solid var(--dc-line);
+  background: #fff;
+  padding: 9px;
+  border-radius: 8px;
 }
 
 .dc-spacer {
-    flex: 1;
+  flex: 1;
 }
 
 /* 게시글 갤러리 및 목록 */
 .dc-feed {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 34px 22px;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 34px 22px;
 }
 
 .dc-post {
-    min-width: 0;
+  min-width: 0;
 }
 
 .dc-thumb {
-    display: block;
-    width: 100%;
-    aspect-ratio: 4/3;
-    overflow: hidden;
-    position: relative;
-    border-radius: 10px;
-    background: #f5f2f8;
+  display: block;
+  width: 100%;
+  aspect-ratio: 4/3;
+  overflow: hidden;
+  position: relative;
+  border-radius: 10px;
+  background: #f5f2f8;
 }
 
 .dc-preview {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
 }
 
 .dc-preview img,
 .dc-preview video {
-    display: block;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform .35s;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform .35s;
 }
 
 .dc-thumb:hover img {
-    transform: scale(1.045);
+  transform: scale(1.045);
 }
 
 .dc-tag,
 .dc-count {
-    position: absolute;
-    right: 10px;
-    top: 10px;
-    background: #292235a6;
-    color: white;
-    border-radius: 5px;
-    padding: 3px 7px;
-    font-size: 11px;
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  background: #292235a6;
+  color: white;
+  border-radius: 5px;
+  padding: 3px 7px;
+  font-size: 11px;
 }
 
 .dc-count {
-    top: auto;
-    bottom: 10px;
+  top: auto;
+  bottom: 10px;
 }
 
 .dc-text-thumb {
-    height: 100%;
-    display: grid;
-    align-content: center;
-    padding: 20px;
-    overflow: hidden;
-    font-size: 17px;
+  height: 100%;
+  display: grid;
+  align-content: center;
+  padding: 20px;
+  overflow: hidden;
+  font-size: 17px;
 }
 
 .dc-title {
-    display: block;
-    padding: 11px 0 3px;
-    font-weight: 650;
-    font-size: 15px;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
+  display: block;
+  padding: 11px 0 3px;
+  font-weight: 650;
+  font-size: 15px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .dc-author {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    margin-right: 8px;
-    font-size: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-right: 8px;
+  font-size: 12px;
 }
 
 .dc-author img {
-    width: 24px;
-    height: 24px;
-    object-fit: cover;
-    border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  object-fit: cover;
+  border-radius: 50%;
 }
 
 .dc-actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    align-items: center;
-    margin-top: 8px;
-    color: var(--dc-muted);
-    font-size: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  margin-top: 8px;
+  color: var(--dc-muted);
+  font-size: 12px;
 }
 
 .dc-actions button {
-    border: 0;
-    background: transparent;
-    padding: 2px 0;
+  border: 0;
+  background: transparent;
+  padding: 2px 0;
 }
 
 .dc-actions button:last-child {
-    margin-left: auto;
+  margin-left: auto;
 }
 
 .dc-actions button[aria-pressed='true'] {
-    color: var(--dc-accent);
+  color: var(--dc-accent);
 }
 
 .dc-feed.dc-list {
-    display: block;
+  display: block;
 }
 
 .dc-list .dc-post {
-    display: grid;
-    grid-template-columns: 100px minmax(0, 1fr) minmax(130px, auto);
-    gap: 18px;
-    align-items: center;
-    border-bottom: 1px solid var(--dc-line);
-    padding: 15px 0;
+  display: grid;
+  grid-template-columns: 100px minmax(0, 1fr) minmax(130px, auto);
+  gap: 18px;
+  align-items: center;
+  border-bottom: 1px solid var(--dc-line);
+  padding: 15px 0;
 }
 
 .dc-list .dc-thumb {
-    aspect-ratio: 1.5;
+  aspect-ratio: 1.5;
 }
 
 .dc-list .dc-title {
-    padding: 0;
+  padding: 0;
 }
 
 .dc-list .dc-text-thumb {
-    font-size: 11px;
-    padding: 8px;
+  font-size: 11px;
+  padding: 8px;
 }
 
 .dc-empty {
-    grid-column: 1/-1;
-    text-align: center;
-    padding: 90px 0;
-    color: var(--dc-muted);
+  grid-column: 1/-1;
+  text-align: center;
+  padding: 90px 0;
+  color: var(--dc-muted);
 }
 
 .dc-more {
-    display: block;
-    margin: 40px auto 0;
+  display: block;
+  margin: 40px auto 0;
 }
 
 /* 반응형 화면 */
 @media (max-width: 1000px) {
-    .dc-collage {
-        height: 270px;
-    }
+  .dc-collage {
+    height: 270px;
+  }
 
-    .dc-feed {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-    }
+  .dc-feed {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
 
-    .dc-categories button {
-        padding: 14px 12px;
-    }
+  .dc-categories button {
+    padding: 14px 12px;
+  }
 }
 
 @media (max-width: 680px) {
-    .dc-hero-inner {
-        display: block;
-        padding: 25px 6%;
-    }
+  .dc-hero-inner {
+    display: block;
+    padding: 25px 6%;
+  }
 
-    .dc-copy h1 {
-        font-size: 38px;
-    }
+  .dc-copy h1 {
+    font-size: 26px;
+  }
 
-    .dc-collage {
-        height: 220px;
-        margin-top: 25px;
-    }
+  .dc-collage {
+    height: 220px;
+    margin-top: 25px;
+  }
 
-    .dc-note {
-        padding: 8px 12px;
-    }
+  .dc-note {
+    padding: 8px 12px;
+  }
 
-    .dc-note strong {
-        font-size: 15px;
-    }
+  .dc-note strong {
+    font-size: 15px;
+  }
 
-    .dc-content {
-        padding: 25px 4% 50px;
-    }
+  .dc-content {
+    padding: 25px 4% 50px;
+  }
 
-    .dc-feed {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 25px 12px;
-    }
+  .dc-feed {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 25px 12px;
+  }
 
-    .dc-tools input {
-        width: 100%;
-    }
+  .dc-tools input {
+    width: 100%;
+  }
 
-    .dc-list .dc-post {
-        grid-template-columns: 65px minmax(0, 1fr);
-        gap: 10px;
-    }
+  .dc-list .dc-post {
+    grid-template-columns: 65px minmax(0, 1fr);
+    gap: 10px;
+  }
 
-    .dc-list .dc-actions {
-        grid-column: 2;
-    }
+  .dc-list .dc-actions {
+    grid-column: 2;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .dc * {
-        animation: none !important;
-        transition: none !important;
-    }
+  .dc * {
+    animation: none !important;
+    transition: none !important;
+  }
 }
 
 /* 페이지 이동 */
 .dc-pagination {
-    display: flex;
-    justify-content: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 14px;
+  margin-top: 40px;
+}
+
+/* ⭐ 공통 레이아웃과 분리된 커뮤니티 본문 */
+.dc.dc-community-page {
+  display: block;
+  position: relative;
+  width: 100%;
+  min-width: 0;
+  max-width: none;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  background: #fff;
+  color: #28213f;
+  overflow: visible;
+}
+
+.dc-community-page .dc-content {
+  display: block;
+  position: relative;
+  width: 100%;
+  max-width: 1330px;
+  margin: 0 auto;
+  background: #fff;
+  overflow: visible;
+}
+
+.dc-community-page .dc-heading {
+  display: flex;
+  position: static;
+  visibility: visible;
+  opacity: 1;
+  width: 100%;
+  gap: 12px;
+  color: #28213f;
+}
+
+.dc-community-page .dc-heading .dc-primary {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  white-space: nowrap;
+}
+
+.dc-community-page .dc-tools {
+  display: flex;
+  position: static;
+  visibility: visible;
+  opacity: 1;
+  width: 100%;
+  color: #28213f;
+}
+
+.dc-community-page .dc-feed {
+  position: static;
+  width: 100%;
+}
+
+.dc-community-page .dc-empty {
+  position: static;
+  padding: 48px 12px;
+  margin: 0;
+}
+
+.dc-community-page .dc-empty p {
+  margin: 0 0 16px;
+}
+
+/* ⭐ 빈 상태에도 v5 액자 배치 유지 */
+.dc-community-page .dc-hero {
+  display: block;
+  width: 100%;
+  min-height: 0;
+  margin: 0;
+  padding: 0;
+}
+
+.dc-community-page .dc-print-empty {
+  background: linear-gradient(135deg, #eee8f5, #ded3ed);
+  pointer-events: none;
+}
+
+.dc-community-page .dc-print[href] {
+  display: block;
+  cursor: pointer;
+}
+
+.dc-community-page .dc-copy {
+  min-width: 0;
+  padding-right: 18px;
+}
+
+.dc-community-page [hidden] {
+  display: none !important;
+}
+
+/* ⭐ 작은 화면에서도 검색과 글쓰기 유지 */
+@media (max-width: 680px) {
+  .dc-community-page .dc-heading {
     align-items: center;
-    gap: 14px;
-    margin-top: 40px;
+  }
+
+  .dc-community-page .dc-tools input {
+    flex: 1 0 100%;
+    width: 100%;
+  }
+
+  .dc-community-page .dc-spacer {
+    display: none;
+  }
+}
+
+/* ⭐ 스크롤 고정: HOT은 문서 흐름, 카테고리만 sticky */
+.dc-community-page .dc-categories {
+  position: sticky;
+  top: var(--dc-header, 80px);
+  z-index: 20;
+  background: #fffffffa;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+}
+
+.dc-community-page .dc-hero {
+  position: relative;
+}
+
+.dc-community-page .dc-collage {
+  min-width: 0;
 }

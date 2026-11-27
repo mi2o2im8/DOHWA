@@ -1,6 +1,6 @@
 import type { Comment, Draft, HotIssue, Post, Query } from './communityTypes'
 
-// 추후 FastAPI/Supabase 연결 지점. 현재 실제 저장 및 조회 API 미연결.
+// ⭐ 추후 FastAPI/Supabase 연결 지점. 현재 실제 저장 및 조회 API 미연결.
 export const communityApi = {
     async list(_query: Query): Promise<{ posts: Post[]; hasMore: boolean }> {
         return { posts: [], hasMore: false }

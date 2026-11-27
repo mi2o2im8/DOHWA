@@ -1,62 +1,84 @@
 /* ⭐ 게시글 작성 및 수정 */
 .dc.dc-write {
-    max-width: 1000px;
-    margin: 0 auto;
-    padding: 36px clamp(20px, 4vw, 56px) 80px;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 36px clamp(20px, 4vw, 56px) 80px;
 }
 
 .dc-form {
-    display: grid;
-    gap: 18px;
+  display: grid;
+  gap: 18px;
 }
 
 .dc-form label {
-    display: grid;
-    gap: 6px;
+  display: grid;
+  gap: 6px;
 }
 
 .dc-form input,
 .dc-form select,
 .dc-form textarea {
-    border: 1px solid var(--dc-line);
-    border-radius: 7px;
-    padding: 10px;
-    width: 100%;
-    background: #fff;
+  border: 1px solid var(--dc-line);
+  border-radius: 7px;
+  padding: 10px;
+  width: 100%;
+  background: #fff;
 }
 
 .dc-form textarea {
-    min-height: 240px;
-    resize: vertical;
+  min-height: 240px;
+  resize: vertical;
 }
 
 /* 첨부 파일 미리보기 */
 .dc-attachments {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
-    gap: 16px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+  gap: 16px;
 }
 
 .dc-attachments img,
 .dc-attachments video {
-    width: 100%;
-    height: 180px;
-    object-fit: contain;
-    background: #faf9fc;
+  width: 100%;
+  height: 180px;
+  object-fit: contain;
+  background: #faf9fc;
 }
 
 .dc-attachments .dc-controls {
-    margin: 5px 0;
-    flex-wrap: wrap;
+  margin: 5px 0;
+  flex-wrap: wrap;
 }
 
 .dc-attachments .dc-controls button {
-    font-size: 12px;
+  font-size: 12px;
 }
 
 .dc-write .dc-end {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    gap: 16px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 16px;
+}
+
+/* ⭐ 공통 레이아웃에 가려지지 않는 작성 폼 */
+.dc.dc-write {
+  display: block;
+  position: relative;
+  width: 100%;
+  min-height: calc(100vh - 80px);
+  background: #fff;
+  overflow: visible;
+}
+
+.dc-write .dc-form {
+  position: static;
+  width: 100%;
+  visibility: visible;
+  opacity: 1;
+}
+
+.dc-write .dc-end button {
+  display: inline-flex;
+  white-space: nowrap;
 }
